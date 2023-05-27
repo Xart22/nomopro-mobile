@@ -6,10 +6,14 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const LOGIN = _Paths.LOGIN;
   static const REGISTER = _Paths.REGISTER;
-  static const CONTROL = _Paths.CONTROL;
-  static const DEVICES = _Paths.CONTROL + _Paths.DEVICES;
+  static const DEVICES = _Paths.DEVICES;
   static const STETTING = _Paths.STETTING;
   static const PROFILE = _Paths.PROFILE;
+  static const CHAT = _Paths.DEVICES + _Paths.CHAT;
+  static const BUTTON = _Paths.DEVICES + _Paths.BUTTON;
+  static const JOYSTICK = _Paths.DEVICES + _Paths.JOYSTICK;
+  static const NOMOPRO = _Paths.NOMOPRO;
+  static const PROJECT = _Paths.PROJECT;
 }
 
 abstract class _Paths {
@@ -17,8 +21,12 @@ abstract class _Paths {
   static const HOME = '/home';
   static const LOGIN = '/login';
   static const REGISTER = '/register';
-  static const CONTROL = '/control';
   static const DEVICES = '/devices';
   static const STETTING = '/stetting';
   static const PROFILE = '/profile';
+  static const CHAT = '/chat';
+  static const BUTTON = '/button';
+  static const JOYSTICK = '/joystick';
+  static const NOMOPRO = '/nomopro';
+  static const PROJECT = '/project';
 }

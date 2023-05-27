@@ -1,4 +1,4 @@
-package com.nomokit.sona.nomokit
+package com.sonasoft.nomokit
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.plugin.common.MethodCall
@@ -11,7 +11,7 @@ import android.content.Context
 import android.content.Intent
 import android.app.PendingIntent
 class MainActivity : FlutterActivity() {
-    private val CHANNEL = "com.nomokit.sona.nomokit.USB_PERMISSION"
+    private val CHANNEL = "com.sonasoft.nomokit.USB_PERMISSION"
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)

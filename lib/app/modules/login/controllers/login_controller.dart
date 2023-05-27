@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nomokit/app/modules/control/devices/views/arrow_keys_view.dart';
+import 'package:nomokit/app/modules/devices/views/arrow_keys_view.dart';
 
 class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();

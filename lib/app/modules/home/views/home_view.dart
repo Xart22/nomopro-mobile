@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:nomokit/app/modules/devices/views/select_controll_type_view.dart';
 
 import '../controllers/home_controller.dart';
+import 'control_view.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
@@ -10,7 +12,8 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nomokit'),
+        backgroundColor: const Color(0xFF4d97ff),
+        title: Text(controller.title.value),
         centerTitle: true,
         actions: [
           IconButton(
@@ -33,6 +36,12 @@ class HomeView extends GetView<HomeController> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.toNamed("/nomopro");
+        },
+        child: const Icon(Icons.play_arrow, size: 40),
+      ),
       body: Container(
         padding: const EdgeInsets.all(20),
         child: Center(
@@ -41,40 +50,34 @@ class HomeView extends GetView<HomeController> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                width: 200,
-                height: 200,
+                width: Get.width / 3.5,
+                height: Get.height / 2.5,
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                     side: const BorderSide(color: Colors.grey, width: 2),
                   ),
-                  elevation: 5,
                   child: InkWell(
                     onTap: () {
-                      Get.toNamed("/control/devices", arguments: "usb");
+                      Get.toNamed('/project');
                     },
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 120,
-                          padding: const EdgeInsets.all(8.0),
-                          child: Image.asset(
-                            "assets/img/nomo.png",
-                            fit: BoxFit.contain,
-                          ),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
                         ),
-                        const SizedBox(
-                          height: 20,
+                        image: DecorationImage(
+                          image: AssetImage("assets/img/playground.png"),
+                          fit: BoxFit.cover,
                         ),
-                        const Text("Nomopro"),
-                      ],
+                      ),
                     ),
                   ),
                 ),
               ),
               SizedBox(
-                width: 200,
-                height: 200,
+                width: Get.width / 3.5,
+                height: Get.height / 2.5,
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -82,23 +85,44 @@ class HomeView extends GetView<HomeController> {
                   ),
                   child: InkWell(
                     onTap: () {
-                      Get.toNamed("/control");
+                      Get.to(() => const ControlView());
                     },
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(8.0),
-                          height: 120,
-                          child: Image.asset(
-                            "assets/img/usb.png",
-                            fit: BoxFit.contain,
-                          ),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
                         ),
-                        const SizedBox(
-                          height: 20,
+                        image: DecorationImage(
+                          image: AssetImage("assets/img/controller.png"),
+                          fit: BoxFit.cover,
                         ),
-                        const Text("Control Your Device"),
-                      ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: Get.width / 3.5,
+                height: Get.height / 2.5,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: const BorderSide(color: Colors.grey, width: 2),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      controller.openShop();
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                        image: DecorationImage(
+                          image: AssetImage("assets/img/shop.png"),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
                 ),

@@ -7,8 +7,7 @@ import 'package:usb_serial/transaction.dart';
 import 'package:usb_serial/usb_serial.dart';
 
 class UsbSerialService extends GetxService {
-  static const _channel =
-      MethodChannel('com.nomokit.sona.nomokit.USB_PERMISSION');
+  static const _channel = MethodChannel('com.sonasoft.nomokit.USB_PERMISSION');
   UsbPort? port;
   var status = "Idle".obs;
   var ports = <Widget>[].obs;

@@ -1,46 +1,74 @@
 import 'dart:async';
+import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class BlueSerialService extends GetxService {
-  BluetoothState bluetoothState = BluetoothState.UNKNOWN;
+import '../data/message_model.dart';
 
-  String? address;
-  String? name;
+class BlueSerialService extends GetxService {
+  final blueSerial = FlutterBluetoothSerial.instance;
+  BluetoothState bluetoothState = BluetoothState.UNKNOWN;
+  BluetoothConnection? connection;
+  final ScrollController listScrollController = ScrollController();
+  var messages = <Message>[].obs;
+  var messageBuffer = ''.obs;
+  var chat = <Row>[].obs;
+  var address = "".obs;
+  var name = "".obs;
 
   Timer? discoverableTimeoutTimer;
   int discoverableTimeoutSecondsLeft = 0;
 
+  StreamSubscription<BluetoothDiscoveryResult>? startDiscovery(
+      Function(BluetoothDiscoveryResult?) callback) {
+    return blueSerial.startDiscovery().listen((callback));
+  }
+
+  connect(String address, Function(Uint8List)? chatBuilder) async {
+    try {
+      connection = await BluetoothConnection.toAddress(address);
+      if (chatBuilder != null) {
+        connection?.input?.listen(chatBuilder);
+      }
+    } catch (exception) {
+      print('Cannot connect, exception occured');
+    }
+  }
+
+  disconnect() async {
+    connection?.close();
+    connection = null;
+  }
+
   Future<BlueSerialService> init() async {
     await Permission.bluetoothConnect.request();
-    FlutterBluetoothSerial.instance.state.then((state) {
+    blueSerial.state.then((state) {
       bluetoothState = state;
     });
 
     Future.doWhile(() async {
       // Wait if adapter not enabled
-      if ((await FlutterBluetoothSerial.instance.isEnabled) ?? false) {
+      if ((await blueSerial.isEnabled) ?? false) {
         return false;
       }
       await Future.delayed(const Duration(milliseconds: 0xDD));
       return true;
     }).then((_) {
       // Update the address field
-      FlutterBluetoothSerial.instance.address.then((add) {
-        address = add!;
+      blueSerial.address.then((add) {
+        address.value = add!;
       });
     });
 
-    FlutterBluetoothSerial.instance.name.then((nm) {
-      name = nm!;
+    blueSerial.name.then((nm) {
+      name.value = nm!;
     });
 
     // Listen for futher state changes
-    FlutterBluetoothSerial.instance
-        .onStateChanged()
-        .listen((BluetoothState state) {
+    blueSerial.onStateChanged().listen((BluetoothState state) {
       bluetoothState = state;
 
       // Discoverable mode is disabled when Bluetooth gets disabled
