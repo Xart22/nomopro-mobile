@@ -18,8 +18,6 @@ import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/project/bindings/project_binding.dart';
 import '../modules/project/views/project_view.dart';
-import '../modules/register/bindings/register_binding.dart';
-import '../modules/register/views/register_view.dart';
 import '../modules/stetting/bindings/stetting_binding.dart';
 import '../modules/stetting/views/stetting_view.dart';
 
@@ -40,11 +38,6 @@ class AppPages {
       name: _Paths.LOGIN,
       page: () => const LoginView(),
       binding: LoginBinding(),
-    ),
-    GetPage(
-      name: _Paths.REGISTER,
-      page: () => const RegisterView(),
-      binding: RegisterBinding(),
     ),
     GetPage(
       name: _Paths.DEVICES,

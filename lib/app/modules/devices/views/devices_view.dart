@@ -36,7 +36,23 @@ class DevicesView extends GetView<DevicesController> {
           ? Obx(() => ListView.builder(
                 itemCount: controller.devicesUsb.length,
                 itemBuilder: (context, index) {
-                  return controller.devicesUsb[index];
+                  return ListTile(
+                    leading: const Icon(Icons.usb),
+                    title: Text(controller.devicesUsb[index].productName ?? ""),
+                    subtitle: Text(
+                        controller.devicesUsb[index].manufacturerName ?? ""),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.arrow_forward_ios),
+                      onPressed: () {
+                        controller.indexSelected.value = index;
+                        Get.to(() => const SelectControllTypeView());
+                      },
+                    ),
+                    onTap: () {
+                      controller.indexSelected.value = index;
+                      Get.to(() => const SelectControllTypeView());
+                    },
+                  );
                 },
               ))
           : Obx(() => ListView.builder(
@@ -52,6 +68,10 @@ class DevicesView extends GetView<DevicesController> {
                         Get.to(() => const SelectControllTypeView());
                       },
                     ),
+                    onTap: () {
+                      controller.indexSelected.value = index;
+                      Get.to(() => const SelectControllTypeView());
+                    },
                   );
                 },
               )),

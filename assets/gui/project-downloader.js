@@ -1,6 +1,5 @@
 var xhr = new XMLHttpRequest();
 var blobUrl = "blobUrlPlaceholder";
-console.log(blobUrl);
 xhr.open("GET", blobUrl, true);
 xhr.responseType = "blob";
 xhr.onload = function (e) {

@@ -22,7 +22,7 @@ class SelectControllTypeView extends GetView<DevicesController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _buildCard("assets/img/joystick.png", '/devices/joystick'),
-                _buildCard("assets/img/button.png", '/devices/button'),
+                // _buildCard("assets/img/button.png", '/devices/button'),
                 _buildCard("assets/img/chat.png", '/devices/chat'),
               ],
             ),
@@ -42,12 +42,14 @@ class SelectControllTypeView extends GetView<DevicesController> {
         elevation: 5,
         child: InkWell(
           onTap: () {
-            Get.toNamed(route, arguments: [
-              controller.connectionType,
-              controller.connectionType == 'usb'
-                  ? controller.devicesUsb[controller.indexSelected.value]
-                  : controller.devicesBt[controller.indexSelected.value].device
-            ]);
+            if (controller.connectionType == 'usb') {
+              controller.showModalBaudRate(route);
+            } else {
+              Get.toNamed(route, arguments: [
+                controller.connectionType,
+                controller.devicesBt[controller.indexSelected.value].device
+              ]);
+            }
           },
           child: Container(
             decoration: BoxDecoration(

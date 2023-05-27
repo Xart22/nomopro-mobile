@@ -6,9 +6,11 @@ import 'package:get/get.dart';
 
 import '../../../../data/message_model.dart';
 import '../../../../services/blue_serial.dart';
+import '../../../../services/usb_serial.dart';
 
 class ChatController extends GetxController {
   final bluetoothService = Get.find<BlueSerialService>();
+  final usbSerialService = Get.find<UsbSerialService>();
   var device = Get.arguments;
   final TextEditingController textEditingController = TextEditingController();
   final ScrollController listScrollController = ScrollController();
@@ -18,6 +20,75 @@ class ChatController extends GetxController {
   var clientID = 0.obs;
   var messageBuffer = ''.obs;
   var isLoading = true.obs;
+  var selectedBaudRate = 9600.obs;
+
+  // USB DEVICE
+
+  connectToUsb() async {
+    await usbSerialService.connect(
+        device[1], selectedBaudRate.value, onStringReceived);
+    isLoading.value = false;
+  }
+
+  void onStringReceived(String data) {
+    messages.add(Message(1, data));
+    chat.add(Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(12.0),
+          margin: const EdgeInsets.only(bottom: 8.0, left: 8.0, right: 8.0),
+          width: 222,
+          decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(7.0)),
+          child: Text(
+              (data) {
+                return data == '/shrug' ? '¯\\_(ツ)_/¯' : data;
+              }(data.trim()),
+              style: const TextStyle(color: Colors.black)),
+        ),
+      ],
+    ));
+  }
+
+  sendUsbMessage() async {
+    var text = textEditingController.text;
+    //convert text to Uint8List
+
+    await usbSerialService.connectedPort!
+        .write(Uint8List.fromList(utf8.encode("$text\r\n")));
+    messages.add(Message(clientID.value, text));
+
+    Future.delayed(const Duration(milliseconds: 333)).then((_) {
+      listScrollController.animateTo(
+          listScrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 333),
+          curve: Curves.easeOut);
+    });
+
+    chat.add(Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(12.0),
+          margin: const EdgeInsets.only(bottom: 8.0, left: 8.0, right: 8.0),
+          width: 222,
+          decoration: BoxDecoration(
+              color: Colors.blueAccent,
+              borderRadius: BorderRadius.circular(7.0)),
+          child: Text(
+              (text) {
+                return text == '/shrug' ? '¯\\_(ツ)_/¯' : text;
+              }(text.trim()),
+              style: const TextStyle(color: Colors.black)),
+        ),
+      ],
+    ));
+    textEditingController.clear();
+  }
+
+// BLE DEVICE
 
   sendMessage(String text) async {
     text = text.trim();
@@ -36,6 +107,24 @@ class ChatController extends GetxController {
               duration: const Duration(milliseconds: 333),
               curve: Curves.easeOut);
         });
+        chat.add(Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12.0),
+              margin: const EdgeInsets.only(bottom: 8.0, left: 8.0, right: 8.0),
+              width: 222,
+              decoration: BoxDecoration(
+                  color: Colors.blueAccent,
+                  borderRadius: BorderRadius.circular(7.0)),
+              child: Text(
+                  (text) {
+                    return text == '/shrug' ? '¯\\_(ツ)_/¯' : text;
+                  }(text.trim()),
+                  style: const TextStyle(color: Colors.black)),
+            ),
+          ],
+        ));
       } catch (e, stacktrace) {
         print(stacktrace);
         print("Error sending message: $e");
@@ -128,19 +217,25 @@ class ChatController extends GetxController {
         ],
       );
     }).toList();
-    update();
   }
 
   @override
   void onInit() {
-    connecToDeviceBle();
     super.onInit();
-    title.value = device[1].name;
+    if (device[0] != 'usb') {
+      title.value = device[1].name;
+      connecToDeviceBle();
+    } else {
+      title.value = device[1].productName ?? '';
+      selectedBaudRate.value = device[2];
+      connectToUsb();
+    }
   }
 
   @override
   void onClose() {
     bluetoothService.disconnect();
+    usbSerialService.disconnect();
     super.onClose();
   }
 }

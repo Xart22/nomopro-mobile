@@ -35,8 +35,13 @@ class JoystickView extends GetView<JoystickController> {
                                   splashColor: Colors.blueAccent,
                                   iconSize: 60,
                                   onPressed: () {
-                                    controller.sendMessage(
-                                        controller.upBtnCommand.value);
+                                    if (controller.device[0] == 'usb') {
+                                      controller.sendMessageUsb(
+                                          controller.upBtnCommand.value);
+                                    } else {
+                                      controller.sendMessage(
+                                          controller.upBtnCommand.value);
+                                    }
                                   },
                                   icon: Image.asset(
                                     'assets/img/arrow_up.png',
@@ -50,8 +55,14 @@ class JoystickView extends GetView<JoystickController> {
                                           splashColor: Colors.blueAccent,
                                           iconSize: 60,
                                           onPressed: () {
-                                            controller.sendMessage(controller
-                                                .leftBtnCommand.value);
+                                            if (controller.device[0] == 'usb') {
+                                              controller.sendMessageUsb(
+                                                  controller
+                                                      .leftBtnCommand.value);
+                                            } else {
+                                              controller.sendMessage(controller
+                                                  .leftBtnCommand.value);
+                                            }
                                           },
                                           icon: Image.asset(
                                             'assets/img/arrow_left.png',
@@ -62,8 +73,14 @@ class JoystickView extends GetView<JoystickController> {
                                           splashColor: Colors.blueAccent,
                                           iconSize: 60,
                                           onPressed: () {
-                                            controller.sendMessage(controller
-                                                .rightBtnCommand.value);
+                                            if (controller.device[0] == 'usb') {
+                                              controller.sendMessageUsb(
+                                                  controller
+                                                      .rightBtnCommand.value);
+                                            } else {
+                                              controller.sendMessage(controller
+                                                  .rightBtnCommand.value);
+                                            }
                                           },
                                           icon: Image.asset(
                                             'assets/img/arrow_right.png',
@@ -75,8 +92,13 @@ class JoystickView extends GetView<JoystickController> {
                                       splashColor: Colors.blueAccent,
                                       iconSize: 60,
                                       onPressed: () {
-                                        controller.sendMessage(
-                                            controller.downBtnCommand.value);
+                                        if (controller.device[0] == 'usb') {
+                                          controller.sendMessageUsb(
+                                              controller.downBtnCommand.value);
+                                        } else {
+                                          controller.sendMessage(
+                                              controller.downBtnCommand.value);
+                                        }
                                       },
                                       icon: Image.asset(
                                         'assets/img/arrow_down.png',
@@ -177,8 +199,13 @@ class JoystickView extends GetView<JoystickController> {
                                     splashColor: Colors.blueAccent,
                                     iconSize: 40,
                                     onPressed: () {
-                                      controller.sendMessage(
-                                          controller.bBtnCommand.value);
+                                      if (controller.device[0] == 'usb') {
+                                        controller.sendMessageUsb(
+                                            controller.bBtnCommand.value);
+                                      } else {
+                                        controller.sendMessage(
+                                            controller.bBtnCommand.value);
+                                      }
                                     },
                                     icon: const Text('B',
                                         style: TextStyle(fontSize: 30))),
@@ -196,8 +223,13 @@ class JoystickView extends GetView<JoystickController> {
                                         splashColor: Colors.blueAccent,
                                         iconSize: 40,
                                         onPressed: () {
-                                          controller.sendMessage(
-                                              controller.aBtnCommand.value);
+                                          if (controller.device[0] == 'usb') {
+                                            controller.sendMessageUsb(
+                                                controller.aBtnCommand.value);
+                                          } else {
+                                            controller.sendMessage(
+                                                controller.aBtnCommand.value);
+                                          }
                                         },
                                         icon: const Text('A',
                                             style: TextStyle(fontSize: 30))),
@@ -212,8 +244,13 @@ class JoystickView extends GetView<JoystickController> {
                                         splashColor: Colors.blueAccent,
                                         iconSize: 40,
                                         onPressed: () {
-                                          controller.sendMessage(
-                                              controller.cBtnCommand.value);
+                                          if (controller.device[0] == 'usb') {
+                                            controller.sendMessageUsb(
+                                                controller.cBtnCommand.value);
+                                          } else {
+                                            controller.sendMessage(
+                                                controller.cBtnCommand.value);
+                                          }
                                         },
                                         icon: const Text('C',
                                             style: TextStyle(fontSize: 30))),
@@ -228,8 +265,13 @@ class JoystickView extends GetView<JoystickController> {
                                     iconSize: 40,
                                     splashColor: Colors.blueAccent,
                                     onPressed: () {
-                                      controller.sendMessage(
-                                          controller.dBtnCommand.value);
+                                      if (controller.device[0] == 'usb') {
+                                        controller.sendMessageUsb(
+                                            controller.dBtnCommand.value);
+                                      } else {
+                                        controller.sendMessage(
+                                            controller.dBtnCommand.value);
+                                      }
                                     },
                                     icon: const Text('D',
                                         style: TextStyle(fontSize: 30))),

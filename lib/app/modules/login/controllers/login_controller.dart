@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nomokit/app/modules/devices/views/arrow_keys_view.dart';
 
 class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
@@ -22,7 +21,6 @@ class LoginController extends GetxController {
     if (emailController.text != '' && passwordController.text != '') {
       Get.offAllNamed('/home');
     }
-    Get.to(() => const ArrowKeysView());
   }
 
   @override

@@ -34,16 +34,12 @@ class ChatView extends GetView<ChatController> {
           ? const Loading()
           : Column(
               children: [
-                GetBuilder<ChatController>(
-                  builder: (_) {
-                    return Flexible(
+                Obx(() => Flexible(
                         child: ListView(
                       padding: const EdgeInsets.all(12.0),
                       controller: controller.listScrollController,
                       children: controller.chat,
-                    ));
-                  },
-                ),
+                    ))),
                 Row(
                   children: [
                     Flexible(
@@ -65,8 +61,10 @@ class ChatView extends GetView<ChatController> {
                           ),
                           onPressed: () {
                             FocusScope.of(context).unfocus();
-                            controller.sendMessage(
-                                controller.textEditingController.text);
+                            controller.device[0] == 'usb'
+                                ? controller.sendUsbMessage()
+                                : controller.sendMessage(
+                                    controller.textEditingController.text);
                           }),
                     ),
                   ],

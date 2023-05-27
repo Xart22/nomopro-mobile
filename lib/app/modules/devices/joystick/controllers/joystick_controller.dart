@@ -5,11 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../services/blue_serial.dart';
+import '../../../../services/usb_serial.dart';
 
 class JoystickController extends GetxController {
   final bluetoothService = Get.find<BlueSerialService>();
+  final usbSerialService = Get.find<UsbSerialService>();
   var device = Get.arguments;
   var isLoading = true.obs;
+  var selectedBaudRate = 9600.obs;
 
   var title = "".obs;
   var tittle = 'Joystick'.obs;
@@ -25,10 +28,37 @@ class JoystickController extends GetxController {
 
   @override
   void onInit() {
-    connecToDeviceBle();
     super.onInit();
-    title.value = device[1].name;
+    if (device[0] != 'usb') {
+      title.value = device[1].name;
+      connecToDeviceBle();
+    } else {
+      title.value = device[1].productName ?? '';
+      selectedBaudRate.value = device[2];
+      connectToUsb();
+    }
   }
+
+  // USB DEVICE
+  connectToUsb() async {
+    await usbSerialService.connect(device[1], selectedBaudRate.value, null);
+    isLoading.value = false;
+  }
+
+  sendMessageUsb(String text) async {
+    if (text.isNotEmpty) {
+      text = text.trim();
+      try {
+        await usbSerialService.connectedPort!
+            .write(Uint8List.fromList(utf8.encode("$text\r\n")));
+      } catch (e, stacktrace) {
+        print(stacktrace);
+        print("Error sending message: $e");
+      }
+    }
+  }
+
+  // BLUETOOTH DEVICE
 
   connecToDeviceBle() async {
     if (bluetoothService.connection == null) {
@@ -65,8 +95,10 @@ class JoystickController extends GetxController {
           ),
           confirmTextColor: Colors.white,
           onConfirm: () {
-            aBtnCommand.value = comandBtn.text;
-            Get.back();
+            if (comandBtn.text.isNotEmpty) {
+              aBtnCommand.value = comandBtn.text;
+              Get.back();
+            }
           },
           onCancel: () {},
         );
@@ -79,8 +111,10 @@ class JoystickController extends GetxController {
           ),
           confirmTextColor: Colors.white,
           onConfirm: () {
-            bBtnCommand.value = comandBtn.text;
-            Get.back();
+            if (comandBtn.text.isNotEmpty) {
+              bBtnCommand.value = comandBtn.text;
+              Get.back();
+            }
           },
           onCancel: () {},
         );
@@ -93,8 +127,10 @@ class JoystickController extends GetxController {
           ),
           confirmTextColor: Colors.white,
           onConfirm: () {
-            cBtnCommand.value = comandBtn.text;
-            Get.back();
+            if (comandBtn.text.isNotEmpty) {
+              cBtnCommand.value = comandBtn.text;
+              Get.back();
+            }
           },
           onCancel: () {},
         );
@@ -107,8 +143,10 @@ class JoystickController extends GetxController {
           ),
           confirmTextColor: Colors.white,
           onConfirm: () {
-            dBtnCommand.value = comandBtn.text;
-            Get.back();
+            if (comandBtn.text.isNotEmpty) {
+              dBtnCommand.value = comandBtn.text;
+              Get.back();
+            }
           },
           onCancel: () {},
         );
@@ -121,8 +159,10 @@ class JoystickController extends GetxController {
           ),
           confirmTextColor: Colors.white,
           onConfirm: () {
-            upBtnCommand.value = comandBtn.text;
-            Get.back();
+            if (comandBtn.text.isNotEmpty) {
+              upBtnCommand.value = comandBtn.text;
+              Get.back();
+            }
           },
           onCancel: () {},
         );
@@ -135,8 +175,10 @@ class JoystickController extends GetxController {
           ),
           confirmTextColor: Colors.white,
           onConfirm: () {
-            rightBtnCommand.value = comandBtn.text;
-            Get.back();
+            if (comandBtn.text.isNotEmpty) {
+              rightBtnCommand.value = comandBtn.text;
+              Get.back();
+            }
           },
           onCancel: () {},
         );
@@ -149,8 +191,10 @@ class JoystickController extends GetxController {
             ),
             confirmTextColor: Colors.white,
             onConfirm: () {
-              downBtnCommand.value = comandBtn.text;
-              Get.back();
+              if (comandBtn.text.isNotEmpty) {
+                downBtnCommand.value = comandBtn.text;
+                Get.back();
+              }
             },
             onCancel: () {});
         break;
@@ -162,11 +206,20 @@ class JoystickController extends GetxController {
             ),
             confirmTextColor: Colors.white,
             onConfirm: () {
-              leftBtnCommand.value = comandBtn.text;
-              Get.back();
+              if (comandBtn.text.isNotEmpty) {
+                leftBtnCommand.value = comandBtn.text;
+                Get.back();
+              }
             },
             onCancel: () {});
         break;
     }
+  }
+
+  @override
+  void onClose() {
+    bluetoothService.disconnect();
+    usbSerialService.disconnect();
+    super.onClose();
   }
 }

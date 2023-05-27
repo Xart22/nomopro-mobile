@@ -20,7 +20,18 @@ class HomeController extends GetxController {
   }
 
   askPermision() async {
-    await Permission.storage.request();
+    var storageStatus = await Permission.storage.status;
+    var cameraStatus = await Permission.camera.status;
+    var microphoneStatus = await Permission.microphone.status;
+    if (!storageStatus.isGranted) {
+      await Permission.storage.request();
+    }
+    if (!cameraStatus.isGranted) {
+      await Permission.camera.request();
+    }
+    if (!microphoneStatus.isGranted) {
+      await Permission.microphone.request();
+    }
   }
 
   getSavedProjectList() async {
