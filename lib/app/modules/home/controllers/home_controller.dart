@@ -30,7 +30,6 @@ class HomeController extends GetxController {
       savedDir.createSync(recursive: true);
     }
     file.value = Directory("$directory/saved").listSync();
-    print(file);
   }
 
   @override
