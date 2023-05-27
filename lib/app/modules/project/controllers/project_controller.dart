@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,8 +25,9 @@ class ProjectController extends GetxController {
 
   onProjectLoaded(String path) async {
     File file = File(path);
-    String content = await file.readAsBytes().then((value) => value.toString());
-    Get.toNamed('/nomopro', arguments: content);
+    Uint8List bytes = await file.readAsBytes();
+    String base64 = base64Encode(bytes);
+    Get.toNamed('/nomopro', arguments: base64);
   }
 
   @override

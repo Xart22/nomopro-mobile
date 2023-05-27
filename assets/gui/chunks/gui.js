@@ -128,7 +128,7 @@ if (Object(_lib_supported_browser__WEBPACK_IMPORTED_MODULE_9__["default"])()) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* WEBPACK VAR INJECTION */(function(Buffer) {/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
@@ -152,7 +152,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 
 var onClickLogo = function onClickLogo() {
-  window.location = "https://nomokit.robo-club.com";
+  // window.location = "https://nomokit.robo-club.com";
+  window.flutter_inappwebview.callHandler("backToHome");
 };
 
 var onClickCheckUpdate = function onClickCheckUpdate() {
@@ -258,14 +259,18 @@ var handleShowMessageBox = function handleShowMessageBox(type, message) {
     }
   }
 
-  var projectFileMatches = window.location.href.match(/[?&]project_file=([^&]*)&?/);
-  var projectFile = projectFileMatches ? decodeURIComponent(projectFileMatches[1]) : null;
+  window.addEventListener("flutterInAppWebViewPlatformReady", function (event) {
+    window.flutter_inappwebview.callHandler("handlerFoo").then(function (result) {
+      // result is base64 encoded string we need to convert to array buffer
+      var arrayBuffer = Uint8Array.from(Buffer.from(result, "base64"), function (c) {
+        return c.charCodeAt(0);
+      }).buffer;
 
-  var onVmInit = function onVmInit(vm) {
-    if (projectFile) {
-      vm.loadProject(projectFile);
-    }
-  };
+      var onVmInit = function onVmInit(vm) {
+        vm.loadProject(arrayBuffer);
+      };
+    });
+  });
 
   if (false) {}
 
@@ -292,10 +297,11 @@ var handleShowMessageBox = function handleShowMessageBox(type, message) {
     backpackHost: backpackHost,
     canSave: false,
     onClickLogo: onClickLogo,
-    onShowMessageBox: handleShowMessageBox,
-    onVmInit: onVmInit
+    onShowMessageBox: handleShowMessageBox // onVmInit={onVmInit}
+
   }), appTarget);
 });
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/buffer/index.js */ "./node_modules/buffer/index.js").Buffer))
 
 /***/ }),
 

@@ -1,12 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 
 class NomoproController extends GetxController {
-  var projectName = 'oll'.obs;
+  final GlobalKey webViewKey = GlobalKey();
+  InAppWebViewController? webViewController;
+  var projectName = ''.obs;
   var projectBlop = Get.arguments;
 
   createFileFromBase64(
@@ -20,11 +24,7 @@ class NomoproController extends GetxController {
 
     var dir = await Directory("${output.path}/saved").create(recursive: true);
     final file = File("${dir.path}/$fileName.$extension");
-    await file.writeAsBytes(bytes.buffer.asUint8List());
-  }
 
-  @override
-  void onInit() {
-    super.onInit();
+    await file.writeAsBytes(bytes.buffer.asUint8List());
   }
 }

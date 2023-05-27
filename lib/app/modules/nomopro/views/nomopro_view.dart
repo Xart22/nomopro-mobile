@@ -12,18 +12,14 @@ class NomoproView extends GetView<NomoproController> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: InAppWebView(
-      initialUrlRequest: URLRequest(
-          url: WebUri(
-              "http://localhost:8080/?project_file=" + controller.projectBlop)),
-      onConsoleMessage: (ctr, consoleMessage) {
-        print(consoleMessage);
-      },
+      initialUrlRequest: URLRequest(url: WebUri("http://localhost:8080/")),
       onPermissionRequest: (ctr, request) async {
         return PermissionResponse(
             resources: request.resources,
             action: PermissionResponseAction.GRANT);
       },
       onWebViewCreated: (ctr) async {
+        controller.webViewController = ctr;
         ctr.addJavaScriptHandler(
           handlerName: "blobToBase64Handler",
           callback: (data) async {
@@ -34,6 +30,20 @@ class NomoproView extends GetView<NomoproController> {
             }
           },
         );
+        ctr.addJavaScriptHandler(
+          handlerName: "backToHome",
+          callback: (data) async {
+            Get.back();
+          },
+        );
+        controller.projectBlop != null
+            ? ctr.addJavaScriptHandler(
+                handlerName: "handlerFoo",
+                callback: (data) async {
+                  return controller.projectBlop;
+                },
+              )
+            : null;
       },
       onDownloadStartRequest: (ctr, blopRes) async {
         var jsContent =
@@ -45,8 +55,11 @@ class NomoproView extends GetView<NomoproController> {
       initialSettings: InAppWebViewSettings(
         javaScriptEnabled: true,
         supportZoom: false,
+        initialScale: 3,
         preferredContentMode: UserPreferredContentMode.MOBILE,
         useOnDownloadStart: true,
+        allowContentAccess: true,
+        allowFileAccessFromFileURLs: true,
       ),
     ));
   }
