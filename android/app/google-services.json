@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "466109169589",
+    "project_id": "nomopro",
+    "storage_bucket": "nomopro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:466109169589:android:7eef19504c7b877452e3fc",
+        "android_client_info": {
+          "package_name": "com.sonasoft.nomokit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpR0ghiQvpn45LK0oDJoRPlXpdhfPub6I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

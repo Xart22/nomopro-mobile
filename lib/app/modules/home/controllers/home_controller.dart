@@ -1,15 +1,34 @@
 import 'dart:io';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../data/login_response_model.dart';
+
 class HomeController extends GetxController {
+  final storage = GetStorage();
   final Uri url = Uri.parse('https://tokopedia.link/yPY3uuba4zb');
   var title = 'Nomokit'.obs;
   var file = [].obs;
+  var userData = User(
+          avatar: '',
+          city: '',
+          collageAddress: '',
+          collageName: '',
+          email: '',
+          id: '',
+          name: '',
+          phone: '',
+          province: '',
+          subscriptions: null,
+          tglLahir: '',
+          username: '')
+      .obs;
+
   Future<void> openShop() async {
     if (!await launchUrl(
       url,
@@ -32,10 +51,13 @@ class HomeController extends GetxController {
     if (!microphoneStatus.isGranted) {
       await Permission.microphone.request();
     }
+
+    userData.value = User.fromJson(await storage.read('user'));
+    title.value = 'Welcome back ${userData.value.username}';
   }
 
   getSavedProjectList() async {
-    var directory = (await getExternalStorageDirectory())!.path;
+    var directory = (await getApplicationDocumentsDirectory()).path;
     Directory savedDir = Directory("$directory/saved");
     if (!savedDir.existsSync()) {
       savedDir.createSync(recursive: true);

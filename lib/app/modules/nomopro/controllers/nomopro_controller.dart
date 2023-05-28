@@ -75,11 +75,11 @@ class NomoproController extends GetxController {
                       },
                       child: const Text("Cancel")),
                   ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (projectNameController.text.isNotEmpty) {
-                          createFileFromBase64(
+                          await createFileFromBase64(
                               projectBlop, projectNameController.text, 'ob');
-                          createFileFromBase64(
+                          await createFileFromBase64(
                               imageBlop[0], projectNameController.text, 'png');
                           if (!isLoadedProject.value) {
                             projectNameController.clear();

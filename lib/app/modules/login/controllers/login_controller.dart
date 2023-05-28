@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:nomokit/app/services/api_service.dart';
+
 class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -11,7 +13,7 @@ class LoginController extends GetxController {
   var emailError = ''.obs;
   var passwordError = ''.obs;
 
-  void submit() {
+  void submit() async {
     if (emailController.text == '') {
       emailError.value = 'Email is required';
     }
@@ -19,7 +21,22 @@ class LoginController extends GetxController {
       passwordError.value = 'Password is required';
     }
     if (emailController.text != '' && passwordController.text != '') {
-      Get.offAllNamed('/home');
+      isLoading.value = true;
+      await Future.delayed(const Duration(seconds: 2));
+      await ApiService.login(emailController.text, passwordController.text)
+          .then((value) {
+        isLoading.value = false;
+        if (value == true) {
+          Get.offAllNamed('/home');
+        } else {
+          Get.snackbar(
+            'Error',
+            'Email or password is wrong',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+          );
+        }
+      });
     }
   }
 
