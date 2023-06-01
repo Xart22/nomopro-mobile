@@ -134,10 +134,20 @@ class ChatController extends GetxController {
 
   connecToDeviceBle() async {
     if (bluetoothService.connection == null) {
-      await bluetoothService.connect(device[1].address, onDataReceived);
-      if (bluetoothService.connection != null) {
-        isLoading.value = false;
-      }
+      await bluetoothService
+          .connect(device[1].address, onDataReceived)
+          .then((value) {
+        if (value) {
+          isLoading.value = false;
+        } else {
+          Get.back();
+          Get.back();
+          Get.snackbar('Error', 'Failed to connect to device',
+              backgroundColor: Colors.red,
+              colorText: Colors.white,
+              snackPosition: SnackPosition.BOTTOM);
+        }
+      });
     }
   }
 

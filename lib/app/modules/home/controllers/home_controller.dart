@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -11,7 +12,10 @@ import '../../../data/login_response_model.dart';
 
 class HomeController extends GetxController {
   final storage = GetStorage();
-  final Uri url = Uri.parse('https://tokopedia.link/yPY3uuba4zb');
+  final Uri urlSonatronic = Uri.parse('https://tokopedia.link/yPY3uuba4zb');
+  final Uri urlRoboClubShopee =
+      Uri.parse('https://shopee.co.id/roboclub_store');
+  final Uri urlRoboClub = Uri.parse('https://tokopedia.link/RFOavkWnaAb');
   var title = 'Nomokit'.obs;
   var file = [].obs;
   var userData = User(
@@ -29,7 +33,85 @@ class HomeController extends GetxController {
           username: '')
       .obs;
 
-  Future<void> openShop() async {
+  showBottomSheet() {
+    Get.bottomSheet(
+      Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        height: 200,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ListTile(
+              leading: Image.asset(
+                'assets/icon/tokped.png',
+                width: 100,
+                height: 100,
+              ),
+              title: const Center(child: Text('Robooclub Store')),
+              trailing: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                ),
+                onPressed: () {
+                  Get.back();
+                  openShop(urlRoboClub);
+                },
+                child: const Text('Open', style: TextStyle(color: Colors.blue)),
+              ),
+            ),
+            ListTile(
+              leading: Image.asset(
+                'assets/icon/tokped.png',
+                width: 100,
+                height: 100,
+              ),
+              title: const Center(
+                  child: Text(
+                'SONANTRONIC',
+              )),
+              trailing: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                ),
+                onPressed: () {
+                  Get.back();
+                  openShop(urlSonatronic);
+                },
+                child: const Text('Open', style: TextStyle(color: Colors.blue)),
+              ),
+            ),
+            ListTile(
+              leading: Image.asset(
+                'assets/icon/shopee.png',
+                width: 100,
+                height: 100,
+              ),
+              title: const Center(child: Text('Roboclub_Store')),
+              trailing: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                ),
+                onPressed: () {
+                  Get.back();
+                  openShop(urlRoboClubShopee);
+                },
+                child: const Text('Open', style: TextStyle(color: Colors.blue)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> openShop(Uri url) async {
     if (!await launchUrl(
       url,
       mode: LaunchMode.externalApplication,

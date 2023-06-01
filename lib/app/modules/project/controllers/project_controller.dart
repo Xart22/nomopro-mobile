@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
@@ -9,6 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class ProjectController extends GetxController {
   var file = <FileSystemEntity>[].obs;
+  var filePicker = ''.obs;
 
   askPermision() async {
     await Permission.storage.request();
@@ -35,9 +37,7 @@ class ProjectController extends GetxController {
         await deleteProject(path);
         Get.back();
       },
-      onCancel: () {
-        Get.back();
-      },
+      onCancel: () {},
     );
   }
 
@@ -62,6 +62,14 @@ class ProjectController extends GetxController {
 
     Get.offAndToNamed('/nomopro',
         arguments: [file.path.split('/').last, base64]);
+  }
+
+  pickFile() async {
+    await FilePicker.platform.pickFiles().then((value) {
+      if (value != null) {
+        onProjectLoaded(value.files.first.path.toString());
+      }
+    });
   }
 
   @override

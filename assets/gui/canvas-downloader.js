@@ -1,6 +1,6 @@
-const canvas = document.getElementsByTagName("canvas")[0];
+let cvs = document.querySelector("canvas");
 
-canvas.toBlob(function (blob) {
+cvs.toBlob(function (blob) {
   var url = window.URL.createObjectURL(blob);
 
   var xhr = new XMLHttpRequest();
@@ -18,7 +18,6 @@ canvas.toBlob(function (blob) {
           /[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/
         )[0];
         var decodedFile = base64ContentArray[1];
-        console.log(mimeType);
         window.flutter_inappwebview.callHandler(
           "saveCanvas",
           decodedFile,

@@ -27,14 +27,15 @@ class BlueSerialService extends GetxService {
     return blueSerial.startDiscovery().listen((callback));
   }
 
-  connect(String address, Function(Uint8List)? chatBuilder) async {
+  Future<bool> connect(String address, Function(Uint8List)? chatBuilder) async {
     try {
       connection = await BluetoothConnection.toAddress(address);
       if (chatBuilder != null) {
         connection?.input?.listen(chatBuilder);
       }
+      return true;
     } catch (exception) {
-      print('Cannot connect, exception occured');
+      return false;
     }
   }
 

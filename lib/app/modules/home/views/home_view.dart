@@ -48,41 +48,35 @@ class HomeView extends GetView<HomeController> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Obx(() => SizedBox(
-                    width: Get.width / 3.5,
-                    height: Get.height / 2.5,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        side: const BorderSide(color: Colors.grey, width: 2),
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          controller.file.isEmpty
-                              ? Get.snackbar("No Saved Project",
-                                  "Please save your project first",
-                                  snackPosition: SnackPosition.BOTTOM)
-                              : Get.toNamed("/project");
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(20),
-                            ),
-                            image: DecorationImage(
-                              opacity: controller.file.isEmpty ? 0.5 : 1,
-                              image:
-                                  const AssetImage("assets/img/playground.png"),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+              SizedBox(
+                width: Get.width / 4.5,
+                height: Get.height / 3,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: const BorderSide(color: Colors.grey, width: 2),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      Get.toNamed("/project");
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                        image: DecorationImage(
+                          image: AssetImage("assets/img/playground.png"),
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                  )),
+                  ),
+                ),
+              ),
               SizedBox(
-                width: Get.width / 3.5,
-                height: Get.height / 2.5,
+                width: Get.width / 4.5,
+                height: Get.height / 3,
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -107,8 +101,8 @@ class HomeView extends GetView<HomeController> {
                 ),
               ),
               SizedBox(
-                width: Get.width / 3.5,
-                height: Get.height / 2.5,
+                width: Get.width / 4.5,
+                height: Get.height / 3,
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -116,7 +110,41 @@ class HomeView extends GetView<HomeController> {
                   ),
                   child: InkWell(
                     onTap: () {
-                      controller.openShop();
+                      Get.snackbar("Coming Soon", "This feature is coming soon",
+                          snackPosition: SnackPosition.BOTTOM);
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                        image: DecorationImage(
+                          opacity: 0.5,
+                          image: AssetImage("assets/img/cummunity.png"),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      child: const Center(
+                          child: Text(
+                        'Coming Soon',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      )),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: Get.width / 4.5,
+                height: Get.height / 3,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: const BorderSide(color: Colors.grey, width: 2),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      controller.showBottomSheet();
                     },
                     child: Container(
                       decoration: const BoxDecoration(

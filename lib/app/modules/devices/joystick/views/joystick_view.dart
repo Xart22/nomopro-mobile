@@ -31,78 +31,86 @@ class JoystickView extends GetView<JoystickController> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              IconButton(
-                                  splashColor: Colors.blueAccent,
-                                  iconSize: 60,
-                                  onPressed: () {
-                                    if (controller.device[0] == 'usb') {
-                                      controller.sendMessageUsb(
-                                          controller.upBtnCommand.value);
-                                    } else {
-                                      controller.sendMessage(
-                                          controller.upBtnCommand.value);
-                                    }
-                                  },
-                                  icon: Image.asset(
-                                    'assets/img/arrow_up.png',
-                                  )),
+                              Listener(
+                                onPointerDown: (details) {
+                                  controller.buttonLeftPressed.value = true;
+                                  controller.sendComandLeftOnButtonHold(
+                                      controller.upBtnCommand.value);
+                                },
+                                onPointerUp: (details) {
+                                  controller.buttonLeftPressed.value = false;
+                                },
+                                child: IconButton(
+                                    splashColor: Colors.blueAccent,
+                                    iconSize: 60,
+                                    onPressed: () {},
+                                    icon: Image.asset(
+                                      'assets/img/arrow_up.png',
+                                    )),
+                              ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   SizedBox(
-                                      child: IconButton(
-                                          splashColor: Colors.blueAccent,
-                                          iconSize: 60,
-                                          onPressed: () {
-                                            if (controller.device[0] == 'usb') {
-                                              controller.sendMessageUsb(
-                                                  controller
-                                                      .leftBtnCommand.value);
-                                            } else {
-                                              controller.sendMessage(controller
-                                                  .leftBtnCommand.value);
-                                            }
-                                          },
-                                          icon: Image.asset(
-                                            'assets/img/arrow_left.png',
-                                          ))),
+                                      child: Listener(
+                                    onPointerDown: (details) {
+                                      controller.buttonLeftPressed.value = true;
+                                      controller.sendComandLeftOnButtonHold(
+                                          controller.leftBtnCommand.value);
+                                    },
+                                    onPointerUp: (details) {
+                                      controller.buttonLeftPressed.value =
+                                          false;
+                                    },
+                                    child: IconButton(
+                                        splashColor: Colors.blueAccent,
+                                        iconSize: 60,
+                                        onPressed: () {},
+                                        icon: Image.asset(
+                                          'assets/img/arrow_left.png',
+                                        )),
+                                  )),
                                   const SizedBox(),
-                                  SizedBox(
-                                      child: IconButton(
-                                          splashColor: Colors.blueAccent,
-                                          iconSize: 60,
-                                          onPressed: () {
-                                            if (controller.device[0] == 'usb') {
-                                              controller.sendMessageUsb(
-                                                  controller
-                                                      .rightBtnCommand.value);
-                                            } else {
-                                              controller.sendMessage(controller
-                                                  .rightBtnCommand.value);
-                                            }
-                                          },
-                                          icon: Image.asset(
-                                            'assets/img/arrow_right.png',
-                                          ))),
+                                  Listener(
+                                    onPointerDown: (details) {
+                                      controller.buttonLeftPressed.value = true;
+                                      controller.sendComandLeftOnButtonHold(
+                                          controller.rightBtnCommand.value);
+                                    },
+                                    onPointerUp: (details) {
+                                      controller.buttonLeftPressed.value =
+                                          false;
+                                    },
+                                    child: SizedBox(
+                                        child: IconButton(
+                                            splashColor: Colors.blueAccent,
+                                            iconSize: 60,
+                                            onPressed: () {},
+                                            icon: Image.asset(
+                                              'assets/img/arrow_right.png',
+                                            ))),
+                                  ),
                                 ],
                               ),
-                              SizedBox(
-                                  child: IconButton(
-                                      splashColor: Colors.blueAccent,
-                                      iconSize: 60,
-                                      onPressed: () {
-                                        if (controller.device[0] == 'usb') {
-                                          controller.sendMessageUsb(
-                                              controller.downBtnCommand.value);
-                                        } else {
-                                          controller.sendMessage(
-                                              controller.downBtnCommand.value);
-                                        }
-                                      },
-                                      icon: Image.asset(
-                                        'assets/img/arrow_down.png',
-                                      ))),
+                              Listener(
+                                onPointerDown: (details) {
+                                  controller.buttonLeftPressed.value = true;
+                                  controller.sendComandLeftOnButtonHold(
+                                      controller.downBtnCommand.value);
+                                },
+                                onPointerUp: (details) {
+                                  controller.buttonLeftPressed.value = false;
+                                },
+                                child: SizedBox(
+                                    child: IconButton(
+                                        splashColor: Colors.blueAccent,
+                                        iconSize: 60,
+                                        onPressed: () {},
+                                        icon: Image.asset(
+                                          'assets/img/arrow_down.png',
+                                        ))),
+                              ),
                             ],
                           )),
                       Container(
@@ -191,90 +199,102 @@ class JoystickView extends GetView<JoystickController> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(width: 3),
-                                    borderRadius: BorderRadius.circular(100)),
-                                child: IconButton(
-                                    splashColor: Colors.blueAccent,
-                                    iconSize: 40,
-                                    onPressed: () {
-                                      if (controller.device[0] == 'usb') {
-                                        controller.sendMessageUsb(
-                                            controller.bBtnCommand.value);
-                                      } else {
-                                        controller.sendMessage(
-                                            controller.bBtnCommand.value);
-                                      }
-                                    },
-                                    icon: const Text('B',
-                                        style: TextStyle(fontSize: 30))),
+                              Listener(
+                                onPointerDown: (details) {
+                                  controller.buttonRightPressed.value = true;
+                                  controller.sendComandRightOnButtonHold(
+                                      controller.bBtnCommand.value);
+                                },
+                                onPointerUp: (details) {
+                                  controller.buttonRightPressed.value = false;
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(width: 3),
+                                      borderRadius: BorderRadius.circular(100)),
+                                  child: IconButton(
+                                      splashColor: Colors.blueAccent,
+                                      iconSize: 40,
+                                      onPressed: () {},
+                                      icon: const Text('B',
+                                          style: TextStyle(fontSize: 30))),
+                                ),
                               ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(width: 3),
-                                        borderRadius:
-                                            BorderRadius.circular(100)),
-                                    child: IconButton(
-                                        splashColor: Colors.blueAccent,
-                                        iconSize: 40,
-                                        onPressed: () {
-                                          if (controller.device[0] == 'usb') {
-                                            controller.sendMessageUsb(
-                                                controller.aBtnCommand.value);
-                                          } else {
-                                            controller.sendMessage(
-                                                controller.aBtnCommand.value);
-                                          }
-                                        },
-                                        icon: const Text('A',
-                                            style: TextStyle(fontSize: 30))),
+                                  Listener(
+                                    onPointerDown: (details) {
+                                      controller.buttonRightPressed.value =
+                                          true;
+                                      controller.sendComandRightOnButtonHold(
+                                          controller.aBtnCommand.value);
+                                    },
+                                    onPointerUp: (details) {
+                                      controller.buttonRightPressed.value =
+                                          false;
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          border: Border.all(width: 3),
+                                          borderRadius:
+                                              BorderRadius.circular(100)),
+                                      child: IconButton(
+                                          splashColor: Colors.blueAccent,
+                                          iconSize: 40,
+                                          onPressed: () {},
+                                          icon: const Text('A',
+                                              style: TextStyle(fontSize: 30))),
+                                    ),
                                   ),
                                   const SizedBox(),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(width: 3),
-                                        borderRadius:
-                                            BorderRadius.circular(100)),
-                                    child: IconButton(
-                                        splashColor: Colors.blueAccent,
-                                        iconSize: 40,
-                                        onPressed: () {
-                                          if (controller.device[0] == 'usb') {
-                                            controller.sendMessageUsb(
-                                                controller.cBtnCommand.value);
-                                          } else {
-                                            controller.sendMessage(
-                                                controller.cBtnCommand.value);
-                                          }
-                                        },
-                                        icon: const Text('C',
-                                            style: TextStyle(fontSize: 30))),
+                                  Listener(
+                                    onPointerDown: (details) {
+                                      controller.buttonRightPressed.value =
+                                          true;
+                                      controller.sendComandRightOnButtonHold(
+                                          controller.cBtnCommand.value);
+                                    },
+                                    onPointerUp: (details) {
+                                      controller.buttonRightPressed.value =
+                                          false;
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          border: Border.all(width: 3),
+                                          borderRadius:
+                                              BorderRadius.circular(100)),
+                                      child: IconButton(
+                                          splashColor: Colors.blueAccent,
+                                          iconSize: 40,
+                                          onPressed: () {},
+                                          icon: const Text('C',
+                                              style: TextStyle(fontSize: 30))),
+                                    ),
                                   ),
                                 ],
                               ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(width: 3),
-                                    borderRadius: BorderRadius.circular(100)),
-                                child: IconButton(
-                                    iconSize: 40,
-                                    splashColor: Colors.blueAccent,
-                                    onPressed: () {
-                                      if (controller.device[0] == 'usb') {
-                                        controller.sendMessageUsb(
-                                            controller.dBtnCommand.value);
-                                      } else {
-                                        controller.sendMessage(
-                                            controller.dBtnCommand.value);
-                                      }
-                                    },
-                                    icon: const Text('D',
-                                        style: TextStyle(fontSize: 30))),
+                              Listener(
+                                onPointerDown: (details) {
+                                  controller.buttonRightPressed.value = true;
+                                  controller.sendComandRightOnButtonHold(
+                                      controller.dBtnCommand.value);
+                                },
+                                onPointerUp: (details) {
+                                  controller.buttonRightPressed.value = false;
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(width: 3),
+                                      borderRadius: BorderRadius.circular(100)),
+                                  child: IconButton(
+                                      iconSize: 40,
+                                      splashColor: Colors.blueAccent,
+                                      onPressed: () {},
+                                      icon: const Text('D',
+                                          style: TextStyle(fontSize: 30))),
+                                ),
                               ),
                             ],
                           ))

@@ -24,9 +24,6 @@ class NomoproView extends GetView<NomoproController> {
                   controller.isLoading.value = false;
                 }
               },
-              onCloseWindow: (ctr) async {
-                Get.offAndToNamed("/home");
-              },
               onPermissionRequest: (controller, request) async {
                 return PermissionResponse(
                     resources: request.resources,
@@ -46,7 +43,7 @@ class NomoproView extends GetView<NomoproController> {
                 ctr.addJavaScriptHandler(
                   handlerName: "backToHome",
                   callback: (data) async {
-                    Get.offAndToNamed("/home");
+                    Get.offAllNamed("/home");
                   },
                 );
                 ctr.addJavaScriptHandler(
@@ -65,7 +62,10 @@ class NomoproView extends GetView<NomoproController> {
               onDownloadStartRequest: (ctr, blopRes) async {
                 var fileJs = await rootBundle
                     .loadString("assets/gui/canvas-downloader.js");
-                await ctr.evaluateJavascript(source: fileJs);
+                await ctr.evaluateJavascript(
+                    source: fileJs.replaceAll(
+                        'document.querySelector("canvas");',
+                        'document.querySelector("canvas");'));
                 var jsContent = await rootBundle
                     .loadString("assets/gui/project-downloader.js");
                 await ctr.evaluateJavascript(

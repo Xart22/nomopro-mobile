@@ -29,9 +29,10 @@ class NomoproController extends GetxController {
     final file = File("${dir.path}/$fileName.$extension");
 
     await file.writeAsBytes(bytes.buffer.asUint8List());
-    if (extension == 'ob') {
+
+    if (extension != 'ob') {
       Get.snackbar("Saved", "Project Saved Successfully",
-          snackPosition: SnackPosition.TOP,
+          snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.green,
           colorText: Colors.white,
           duration: const Duration(seconds: 2));
@@ -39,7 +40,7 @@ class NomoproController extends GetxController {
   }
 
   showModalTitleProjcet(String projectBlop) {
-    Get.defaultDialog(
+    return Get.defaultDialog(
         title: "Save Project",
         content: SingleChildScrollView(
           child: Column(
@@ -77,6 +78,7 @@ class NomoproController extends GetxController {
                   ElevatedButton(
                       onPressed: () async {
                         if (projectNameController.text.isNotEmpty) {
+                          Get.back();
                           await createFileFromBase64(
                               projectBlop, projectNameController.text, 'ob');
                           await createFileFromBase64(
@@ -84,7 +86,6 @@ class NomoproController extends GetxController {
                           if (!isLoadedProject.value) {
                             projectNameController.clear();
                           }
-                          Get.back();
                         }
                       },
                       child: const Text("Save")),

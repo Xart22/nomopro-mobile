@@ -26,6 +26,11 @@ class JoystickController extends GetxController {
   var rightBtnCommand = "RIGHT".obs;
   TextEditingController comandBtn = TextEditingController();
 
+  var loopLeftActive = false.obs;
+  var buttonLeftPressed = false.obs;
+  var loopRightActive = false.obs;
+  var buttonRightPressed = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -37,6 +42,40 @@ class JoystickController extends GetxController {
       selectedBaudRate.value = device[2];
       connectToUsb();
     }
+  }
+
+  void sendComandLeftOnButtonHold(String comand) async {
+    if (loopRightActive.value) return; // check if loop is active
+
+    loopRightActive.value = true;
+
+    while (buttonLeftPressed.value) {
+      if (device[0] == 'usb') {
+        sendMessageUsb(comand);
+      } else {
+        sendMessage(comand);
+      }
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+
+    loopRightActive.value = false;
+  }
+
+  void sendComandRightOnButtonHold(String comand) async {
+    if (loopLeftActive.value) return; // check if loop is active
+
+    loopLeftActive.value = true;
+
+    while (buttonRightPressed.value) {
+      if (device[0] == 'usb') {
+        sendMessageUsb(comand);
+      } else {
+        sendMessage(comand);
+      }
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+
+    loopLeftActive.value = false;
   }
 
   // USB DEVICE
@@ -62,10 +101,18 @@ class JoystickController extends GetxController {
 
   connecToDeviceBle() async {
     if (bluetoothService.connection == null) {
-      await bluetoothService.connect(device[1].address, null);
-      if (bluetoothService.connection != null) {
-        isLoading.value = false;
-      }
+      await bluetoothService.connect(device[1].address, null).then((value) {
+        if (value) {
+          isLoading.value = false;
+        } else {
+          Get.back();
+          Get.back();
+          Get.snackbar('Error', 'Failed to connect to device',
+              backgroundColor: Colors.red,
+              colorText: Colors.white,
+              snackPosition: SnackPosition.BOTTOM);
+        }
+      });
     }
   }
 
@@ -75,11 +122,15 @@ class JoystickController extends GetxController {
     if (text.isNotEmpty) {
       try {
         bluetoothService.connection!.output
-            .add(Uint8List.fromList(utf8.encode("$text\r\n")));
+            .add(Uint8List.fromList(utf8.encode("$text\n")));
         await bluetoothService.connection!.output.allSent;
-      } catch (e, stacktrace) {
-        print(stacktrace);
-        print("Error sending message: $e");
+      } catch (e) {
+        Get.back();
+        Get.back();
+        Get.snackbar('Error', 'Failed to send message device disconnected',
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM);
       }
     }
   }

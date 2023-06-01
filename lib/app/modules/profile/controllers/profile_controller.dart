@@ -7,7 +7,7 @@ import '../../../data/login_response_model.dart';
 class ProfileController extends GetxController {
   final storage = GetStorage();
   var userData = User(
-          avatar: '',
+          avatar: 'user.png',
           city: '',
           collageAddress: '',
           collageName: '',

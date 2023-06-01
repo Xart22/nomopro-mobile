@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -37,19 +38,21 @@ class ProfileView extends GetView<ProfileController> {
                       Expanded(
                         child: Column(
                           children: [
-                            Obx(() => Container(
-                                  margin: const EdgeInsets.all(20),
-                                  width: 100,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                          "https://nomo-kit.com/storage/avatar/${controller.userData.value.avatar}"),
-                                      fit: BoxFit.fill,
+                            Obx(() => controller.userData.value.avatar.isEmpty
+                                ? Container()
+                                : Container(
+                                    margin: const EdgeInsets.all(20),
+                                    width: 100,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                        image: CachedNetworkImageProvider(
+                                            "https://nomo-kit.com/storage/avatar/${controller.userData.value.avatar}"),
+                                        fit: BoxFit.fill,
+                                      ),
                                     ),
-                                  ),
-                                )),
+                                  )),
                             Obx(() => Text(controller.userData.value.username)),
                             const SizedBox(
                               height: 10,
@@ -60,10 +63,13 @@ class ProfileView extends GetView<ProfileController> {
                             ),
                             const Text('Subscription End Date :'),
                             Obx(() => Text(
-                                  controller
-                                      .userData.value.subscriptions!.endDate
-                                      .toIso8601String()
-                                      .substring(0, 10),
+                                  controller.userData.value.subscriptions ==
+                                          null
+                                      ? ''
+                                      : controller
+                                          .userData.value.subscriptions!.endDate
+                                          .toIso8601String()
+                                          .substring(0, 10),
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 )),
