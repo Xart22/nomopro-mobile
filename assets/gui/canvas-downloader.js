@@ -1,8 +1,6 @@
-let cvs = document.querySelector("canvas");
+let cvs = document.getElementById("stage-canvas");
 
-cvs.toBlob(function (blob) {
-  var url = window.URL.createObjectURL(blob);
-
+const downloader = (url) => {
   var xhr = new XMLHttpRequest();
   xhr.open("GET", url, true);
   xhr.responseType = "blob";
@@ -27,4 +25,6 @@ cvs.toBlob(function (blob) {
     }
   };
   xhr.send();
-});
+};
+
+downloader(cvs.toDataURL("image/png"));

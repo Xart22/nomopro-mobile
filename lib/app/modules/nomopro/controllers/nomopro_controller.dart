@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -22,13 +23,14 @@ class NomoproController extends GetxController {
     if (!status.isGranted) {
       await Permission.storage.request();
     }
+
     var bytes = base64Decode(base64content.replaceAll('\n', ''));
     final output = await getApplicationDocumentsDirectory();
 
     var dir = await Directory("${output.path}/saved").create(recursive: true);
     final file = File("${dir.path}/$fileName.$extension");
 
-    await file.writeAsBytes(bytes.buffer.asUint8List());
+    await file.writeAsBytes(bytes.buffer.asUint8List(), flush: true);
 
     if (extension != 'ob') {
       Get.snackbar("Saved", "Project Saved Successfully",

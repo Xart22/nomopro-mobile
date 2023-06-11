@@ -9,9 +9,13 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../data/login_response_model.dart';
+import '../../../services/blue_serial.dart';
+import '../../../services/usb_serial.dart';
 
 class HomeController extends GetxController {
   final storage = GetStorage();
+  late UsbSerialService usbService;
+  late BlueSerialService bluetoothService;
   final Uri urlSonatronic = Uri.parse('https://tokopedia.link/yPY3uuba4zb');
   final Uri urlRoboClubShopee =
       Uri.parse('https://shopee.co.id/roboclub_store');
@@ -150,7 +154,8 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
+    usbService = Get.find<UsbSerialService>();
+    bluetoothService = Get.find<BlueSerialService>();
     askPermision();
     getSavedProjectList();
   }

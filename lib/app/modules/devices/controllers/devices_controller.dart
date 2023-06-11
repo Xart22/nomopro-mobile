@@ -5,7 +5,6 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:get/get.dart';
 import 'package:nomokit/app/services/blue_serial.dart';
 import 'package:nomokit/app/services/usb_serial.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:usb_serial/usb_serial.dart';
 
 class DevicesController extends GetxController {

@@ -45,9 +45,13 @@ class BlueSerialService extends GetxService {
   }
 
   Future<BlueSerialService> init() async {
+    var statusBluetoothScan = await Permission.bluetoothScan.status;
     var statusbluetoothConnect = await Permission.bluetoothConnect.status;
     var statusbluetooth = await Permission.bluetooth.status;
     var statusbluetoothAdvertise = await Permission.bluetoothAdvertise.status;
+    if (!statusBluetoothScan.isGranted) {
+      await Permission.bluetoothScan.request();
+    }
     if (!statusbluetooth.isGranted) {
       await Permission.bluetooth.request();
     }

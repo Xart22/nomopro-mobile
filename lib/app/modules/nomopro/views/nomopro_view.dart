@@ -31,6 +31,7 @@ class NomoproView extends GetView<NomoproController> {
               },
               onWebViewCreated: (ctr) async {
                 controller.webViewController = ctr;
+
                 ctr.addJavaScriptHandler(
                   handlerName: "blobToBase64Handler",
                   callback: (data) async {
@@ -62,10 +63,7 @@ class NomoproView extends GetView<NomoproController> {
               onDownloadStartRequest: (ctr, blopRes) async {
                 var fileJs = await rootBundle
                     .loadString("assets/gui/canvas-downloader.js");
-                await ctr.evaluateJavascript(
-                    source: fileJs.replaceAll(
-                        'document.querySelector("canvas");',
-                        'document.querySelector("canvas");'));
+                await ctr.evaluateJavascript(source: fileJs);
                 var jsContent = await rootBundle
                     .loadString("assets/gui/project-downloader.js");
                 await ctr.evaluateJavascript(

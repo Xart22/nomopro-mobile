@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-class ControlView extends GetView {
+import '../controllers/home_controller.dart';
+
+class ControlView extends GetView<HomeController> {
   const ControlView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    controller.bluetoothService.init();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF4d97ff),
