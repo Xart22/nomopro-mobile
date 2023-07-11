@@ -24,7 +24,7 @@ class DevicesController extends GetxController {
   var indexSelected = 0.obs;
   var selectedBaudRate = 9600.obs;
 
-  startDiscovery() async {
+  startDiscovery() {
     isDiscovering.value = true;
     devicesBt.clear();
     deviceStreamSubscription = bluetoothService.startDiscovery((result) {
@@ -71,6 +71,8 @@ class DevicesController extends GetxController {
                 snackPosition: SnackPosition.BOTTOM);
           }
         });
+      } else {
+        startDiscovery();
       }
     }
   }

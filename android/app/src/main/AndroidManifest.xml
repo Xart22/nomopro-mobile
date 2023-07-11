@@ -48,9 +48,6 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <meta-data 
-        android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-		android:resource="@xml/device_filter" />    
         <provider
         android:name="com.pichillilorenzo.flutter_inappwebview.InAppWebViewFileProvider"
         android:authorities="${applicationId}.flutter_inappwebview.fileprovider"
