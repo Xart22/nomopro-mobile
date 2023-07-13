@@ -110,8 +110,8 @@ class HomeView extends GetView<HomeController> {
                   ),
                   child: InkWell(
                     onTap: () {
-                      Get.snackbar("Coming Soon", "This feature is coming soon",
-                          snackPosition: SnackPosition.BOTTOM);
+                      controller.openShop(
+                          Uri.parse('https://nomo-kit.com/community'));
                     },
                     child: Container(
                       decoration: const BoxDecoration(
@@ -119,17 +119,10 @@ class HomeView extends GetView<HomeController> {
                           Radius.circular(20),
                         ),
                         image: DecorationImage(
-                          opacity: 0.5,
                           image: AssetImage("assets/img/cummunity.png"),
                           fit: BoxFit.cover,
                         ),
                       ),
-                      child: const Center(
-                          child: Text(
-                        'Coming Soon',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      )),
                     ),
                   ),
                 ),

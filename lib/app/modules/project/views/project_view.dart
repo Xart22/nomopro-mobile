@@ -81,7 +81,10 @@ class ProjectView extends GetView<ProjectController> {
                               ),
                             ),
                             child: Text(
-                                controller.file[index].path.split('/').last,
+                                controller.file[index].path
+                                    .split('/')
+                                    .last
+                                    .replaceAll(".ob", ''),
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 14)),

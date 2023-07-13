@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:in_app_update/in_app_update.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -36,6 +37,16 @@ class HomeController extends GetxController {
           tglLahir: '',
           username: '')
       .obs;
+
+  Future<void> checkForUpdate() async {
+    await InAppUpdate.checkForUpdate().then((info) {
+      info.updateAvailability == UpdateAvailability.updateAvailable
+          ? InAppUpdate.performImmediateUpdate().catchError((e) => print(e))
+          : null;
+    }).catchError((e) {
+      print(e);
+    });
+  }
 
   showBottomSheet() {
     Get.bottomSheet(
@@ -158,5 +169,6 @@ class HomeController extends GetxController {
     bluetoothService = Get.find<BlueSerialService>();
     askPermision();
     getSavedProjectList();
+    checkForUpdate();
   }
 }
