@@ -18,7 +18,7 @@ class NomoproView extends GetView<NomoproController> {
           children: [
             InAppWebView(
               initialUrlRequest:
-                  URLRequest(url: WebUri("http://localhost:8080/")),
+                  URLRequest(url: WebUri("http://192.168.1.7:8601/")),
               onConsoleMessage: (ctr, consoleMessage) {
                 if (consoleMessage.message.contains("makeyMakey")) {
                   controller.isLoading.value = false;

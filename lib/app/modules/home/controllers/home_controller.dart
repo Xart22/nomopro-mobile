@@ -12,6 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../data/login_response_model.dart';
 import '../../../services/blue_serial.dart';
 import '../../../services/usb_serial.dart';
+import '../../../services/websocket/websocket_server_service.dart';
 
 class HomeController extends GetxController {
   final storage = GetStorage();
@@ -41,10 +42,8 @@ class HomeController extends GetxController {
   Future<void> checkForUpdate() async {
     await InAppUpdate.checkForUpdate().then((info) {
       info.updateAvailability == UpdateAvailability.updateAvailable
-          ? InAppUpdate.performImmediateUpdate().catchError((e) => print(e))
+          ? InAppUpdate.performImmediateUpdate()
           : null;
-    }).catchError((e) {
-      print(e);
     });
   }
 
@@ -170,5 +169,6 @@ class HomeController extends GetxController {
     askPermision();
     getSavedProjectList();
     checkForUpdate();
+    startServer();
   }
 }
