@@ -71,61 +71,86 @@ class NomoproController extends GetxController {
   }
 
   void startDiscovery() {
-    devicesBt.clear();
-    Get.defaultDialog(
-        title: connectionTo.value == ''
-            ? "Connect to Device"
-            : "Connected To ${connectionTo.value}",
-        content: Obx(() => SizedBox(
-              height: Get.height / 2,
-              width: Get.width / 2,
-              child: ListView.builder(
-                  itemCount: devicesBt.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      onTap: () async {
-                        Get.back();
-                        if (connection != null) {
-                          connection!.close();
-                          connection = null;
-                        }
-                        connection = await BluetoothConnection.toAddress(
-                            devicesBt[index].device.address);
-                        connectionTo.value = devicesBt[index].device.name!;
-                        connection!.input!.listen(onDataReceived);
-                        await webViewController!.postWebMessage(
-                            message: WebMessage(data: 'CONNECTED'),
-                            targetOrigin: WebUri('*'));
-                        Get.snackbar("Bluetooth", "Connected Successfully",
-                            snackPosition: SnackPosition.BOTTOM,
-                            backgroundColor: Colors.green,
-                            colorText: Colors.white,
-                            duration: const Duration(seconds: 2));
-                      },
-                      title: Text(devicesBt[index].device.name ?? ''),
-                      subtitle: Text(devicesBt[index].device.address),
-                    );
-                  }),
-            )),
-        cancel: TextButton(
-          onPressed: () {
-            deviceStreamSubscription?.cancel();
-            isDicovering.value = false;
-            Get.back();
-          },
-          child: const Text("Cancel"),
-        ),
-        barrierDismissible: false);
-    if (!isDicovering.value) {
-      isDicovering.value = true;
-      deviceStreamSubscription = bluetoothService.startDiscovery((result) {
-        devicesBt.add(result!);
-      });
-    }
+    if (connectionTo.value == '') {
+      devicesBt.clear();
+      if (!isDicovering.value) {
+        isDicovering.value = true;
+        deviceStreamSubscription = bluetoothService.startDiscovery((result) {
+          devicesBt.add(result!);
+        });
+      }
+      Get.defaultDialog(
+          title: connectionTo.value == ''
+              ? "Connect to Device"
+              : "Connected To ${connectionTo.value}",
+          content: Obx(() => SizedBox(
+                height: Get.height / 2,
+                width: Get.width / 2,
+                child: ListView.builder(
+                    itemCount: devicesBt.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        onTap: () async {
+                          Get.back();
+                          if (connection != null) {
+                            connection!.close();
+                            connection = null;
+                          }
+                          connection = await BluetoothConnection.toAddress(
+                              devicesBt[index].device.address);
+                          connectionTo.value = devicesBt[index].device.name!;
+                          connection!.input!.listen(onDataReceived);
+                          await webViewController!.postWebMessage(
+                              message: WebMessage(data: 'CONNECTED'),
+                              targetOrigin: WebUri('*'));
+                          Get.snackbar("Bluetooth", "Connected Successfully",
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.green,
+                              colorText: Colors.white,
+                              duration: const Duration(seconds: 2));
+                        },
+                        title: Text(devicesBt[index].device.name ?? ''),
+                        subtitle: Text(devicesBt[index].device.address),
+                      );
+                    }),
+              )),
+          cancel: TextButton(
+            onPressed: () {
+              deviceStreamSubscription?.cancel();
+              isDicovering.value = false;
+              Get.back();
+            },
+            child: const Text("Cancel"),
+          ),
+          barrierDismissible: false);
 
-    deviceStreamSubscription?.onDone(() {
-      isDicovering.value = false;
-    });
+      deviceStreamSubscription?.onDone(() {
+        isDicovering.value = false;
+      });
+    } else {
+      Get.dialog(AlertDialog(
+        title: const Text("Disconnect"),
+        content: Text(
+            "Are you sure you want to disconnect from ${connectionTo.value} ?"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              connection!.close();
+              connection = null;
+              connectionTo.value = '';
+              Get.back();
+            },
+            child: const Text("Yes"),
+          ),
+          TextButton(
+            onPressed: () {
+              Get.back();
+            },
+            child: Text("No"),
+          ),
+        ],
+      ));
+    }
   }
 
   void onDataReceived(Uint8List data) async {
