@@ -18,7 +18,7 @@ class NomoproView extends GetView<NomoproController> {
           children: [
             InAppWebView(
               initialUrlRequest:
-                  URLRequest(url: WebUri("http://192.168.1.7:8601/")),
+                  URLRequest(url: WebUri("http://localhost:8080/")),
               onConsoleMessage: (ctr, consoleMessage) {
                 if (consoleMessage.message.contains("makeyMakey")) {
                   controller.isLoading.value = false;
@@ -31,6 +31,21 @@ class NomoproView extends GetView<NomoproController> {
               },
               onWebViewCreated: (ctr) async {
                 controller.webViewController = ctr;
+
+                ctr.addJavaScriptHandler(
+                  handlerName: "openConnectionModal",
+                  callback: (data) async {
+                    controller.showConnectionModal();
+                  },
+                );
+
+                ctr.addJavaScriptHandler(
+                  handlerName: "writeToTransport",
+                  callback: (data) async {
+                    Uint8List comand = Uint8List.fromList(data[0].cast<int>());
+                    controller.writeToTransport(comand);
+                  },
+                );
 
                 ctr.addJavaScriptHandler(
                   handlerName: "blobToBase64Handler",
