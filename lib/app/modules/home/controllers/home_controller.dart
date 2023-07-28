@@ -35,6 +35,7 @@ class HomeController extends GetxController {
           province: '',
           subscriptions: null,
           tglLahir: '',
+          trial: null,
           username: '')
       .obs;
 

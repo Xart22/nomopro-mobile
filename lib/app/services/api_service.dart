@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
+import 'package:restart_app/restart_app.dart';
 
 import '../data/login_response_model.dart';
 
@@ -13,7 +14,7 @@ class ApiService {
   static final storage = GetStorage();
   static String accestoken = storage.read('accestoken');
 
-  static Future<bool?> login(String username, String password) async {
+  static Future<String?> login(String username, String password) async {
     try {
       final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
       String? token = await firebaseMessaging.getToken();
@@ -32,24 +33,38 @@ class ApiService {
       if (response.statusCode == 200) {
         final data = loginResponseModelFromJson(response.body);
         await storage.write('accestoken', data.token);
-        if (data.user.subscriptions == null) {
+        if (data.user.subscriptions == null && data.user.trial == null) {
           Get.snackbar(
             'Failed',
             'You are not subscribed to any plan',
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.red,
           );
-          await logout();
-          return false;
-        }
-        await storage.write('user', data.user.toJson());
+          return 'failed';
+        } else if (data.user.subscriptions != null &&
+            data.user.subscriptions?.isActive == 1) {
+          await storage.write('user', data.user.toJson());
 
-        return true;
+          return 'success';
+        } else if (data.user.trial != null && data.user.trial?.isActive == 1) {
+          await storage.write('user', data.user.toJson());
+          return 'success';
+        } else {
+          Get.snackbar(
+            'Failed',
+            'You are not subscribed to any plan',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+          );
+          return 'failed';
+        }
       } else {
-        return false;
+        return 'error';
       }
-    } catch (e) {
-      return false;
+    } catch (e, s) {
+      print(e);
+      print(s);
+      return 'error';
     }
   }
 
@@ -90,6 +105,7 @@ class ApiService {
       );
       if (response.statusCode == 200) {
         await storage.erase();
+        Restart.restartApp();
         return true;
       } else {
         return false;

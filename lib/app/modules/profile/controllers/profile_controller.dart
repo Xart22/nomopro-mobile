@@ -18,7 +18,8 @@ class ProfileController extends GetxController {
           province: '',
           subscriptions: null,
           tglLahir: '',
-          username: '')
+          username: '',
+          trial: null)
       .obs;
 
   getProfile() async {

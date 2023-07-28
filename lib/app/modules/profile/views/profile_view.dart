@@ -61,13 +61,31 @@ class ProfileView extends GetView<ProfileController> {
                             const SizedBox(
                               height: 10,
                             ),
-                            const Text('Subscription End Date :'),
+                            Obx(() =>
+                                controller.userData.value.subscriptions == null
+                                    ? Container()
+                                    : const Text('Subscription End Date :')),
                             Obx(() => Text(
                                   controller.userData.value.subscriptions ==
                                           null
                                       ? ''
                                       : controller
                                           .userData.value.subscriptions!.endDate
+                                          .toIso8601String()
+                                          .substring(0, 10),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                )),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Obx(() => controller.userData.value.trial == null
+                                ? Container()
+                                : const Text('Trial End Date :')),
+                            Obx(() => Text(
+                                  controller.userData.value.trial == null
+                                      ? ''
+                                      : controller.userData.value.trial!.endDate
                                           .toIso8601String()
                                           .substring(0, 10),
                                   style: const TextStyle(

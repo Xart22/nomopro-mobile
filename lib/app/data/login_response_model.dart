@@ -40,8 +40,8 @@ class User {
   final String city;
   final String province;
   final String? tglLahir;
-
   final Subscriptions? subscriptions;
+  final Trial? trial;
 
   User({
     required this.id,
@@ -57,6 +57,7 @@ class User {
     required this.province,
     required this.tglLahir,
     required this.subscriptions,
+    required this.trial,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -75,6 +76,7 @@ class User {
         subscriptions: json["subscriptions"] == null
             ? null
             : Subscriptions.fromJson(json["subscriptions"]),
+        trial: json["trial"] == null ? null : Trial.fromJson(json["trial"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -90,7 +92,8 @@ class User {
         "city": city,
         "province": province,
         "tgl_lahir": tglLahir,
-        "subscriptions": subscriptions!.toJson(),
+        "subscriptions": subscriptions?.toJson(),
+        "trial": trial?.toJson(),
       };
 }
 
@@ -141,5 +144,26 @@ class Subscriptions {
         "updated_at": updatedAt.toIso8601String(),
         "is_active": isActive,
         "send_email": sendEmail,
+      };
+}
+
+class Trial {
+  final DateTime endDate;
+  final int isActive;
+
+  Trial({
+    required this.endDate,
+    required this.isActive,
+  });
+
+  factory Trial.fromJson(Map<String, dynamic> json) => Trial(
+        endDate: DateTime.parse(json["trial_ends"]),
+        isActive: json["is_active"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "trial_ends":
+            "${endDate.year.toString().padLeft(4, '0')}-${endDate.month.toString().padLeft(2, '0')}-${endDate.day.toString().padLeft(2, '0')}",
+        "is_active": isActive,
       };
 }

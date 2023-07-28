@@ -26,9 +26,11 @@ class LoginController extends GetxController {
       await ApiService.login(emailController.text, passwordController.text)
           .then((value) {
         isLoading.value = false;
-        if (value == true) {
+        if (value == 'success') {
           Get.offAllNamed('/home');
-        } else {
+        }
+
+        if (value == 'error') {
           Get.snackbar(
             'Error',
             'Email or password is wrong',
