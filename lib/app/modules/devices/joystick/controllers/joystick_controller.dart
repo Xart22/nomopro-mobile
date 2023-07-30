@@ -124,6 +124,9 @@ class JoystickController extends GetxController {
         bluetoothService.connection!.output
             .add(Uint8List.fromList(utf8.encode("$text\n")));
         await bluetoothService.connection!.output.allSent;
+        bluetoothService.connection!.output
+            .add(Uint8List.fromList(utf8.encode("off\n")));
+        await bluetoothService.connection!.output.allSent;
       } catch (e) {
         Get.back();
         Get.back();
