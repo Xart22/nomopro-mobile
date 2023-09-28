@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:nomokit/app/services/api_service.dart';
+import 'package:restart_app/restart_app.dart';
 
 import '../../../data/login_response_model.dart';
 
@@ -28,7 +29,7 @@ class ProfileController extends GetxController {
   }
 
   logout() async {
-    await ApiService.logout().then((value) => Get.offAllNamed('/login'));
+    await ApiService.logout().then((value) => Restart.restartApp());
   }
 
   @override

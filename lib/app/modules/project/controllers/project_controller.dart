@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ProjectController extends GetxController {
   var file = <FileSystemEntity>[].obs;
@@ -28,6 +29,66 @@ class ProjectController extends GetxController {
 
   onLongPress(String path) {
     Get.defaultDialog(
+      title: '',
+      titlePadding: const EdgeInsets.all(0),
+      contentPadding: const EdgeInsets.all(0),
+      content: SizedBox(
+          width: 400,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  IconButton(
+                    iconSize: 30,
+                    onPressed: () {
+                      Get.back();
+                      Get.toNamed('upload-project', arguments: path);
+                    },
+                    icon: const Icon(
+                      Icons.upload,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const Text('Upload')
+                ],
+              ),
+              Column(
+                children: [
+                  IconButton(
+                    iconSize: 30,
+                    onPressed: () => onShareXFileFromAssets(Get.context!, path),
+                    icon: const Icon(
+                      Icons.share,
+                      color: Colors.blue,
+                    ),
+                  ),
+                  const Text('Share')
+                ],
+              ),
+              Column(
+                children: [
+                  IconButton(
+                    iconSize: 30,
+                    onPressed: () {
+                      deleteModal(path);
+                    },
+                    icon: const Icon(
+                      Icons.delete_forever,
+                      color: Colors.red,
+                    ),
+                  ),
+                  const Text('Delete')
+                ],
+              ),
+            ],
+          )),
+    );
+  }
+
+  deleteModal(String path) {
+    Get.defaultDialog(
       title: 'Delete Project',
       middleText: 'Are you sure want to delete this project?',
       textConfirm: 'Yes',
@@ -35,6 +96,7 @@ class ProjectController extends GetxController {
       confirmTextColor: Colors.white,
       onConfirm: () async {
         await deleteProject(path);
+        Get.back();
         Get.back();
       },
       onCancel: () {},
@@ -70,6 +132,19 @@ class ProjectController extends GetxController {
         onProjectLoaded(value.files.first.path.toString());
       }
     });
+  }
+
+  onShareXFileFromAssets(BuildContext context, String path) async {
+    final box = context.findRenderObject() as RenderBox?;
+
+    XFile file = XFile(path);
+
+    await Share.shareXFiles(
+      [file],
+      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+    );
+
+    Get.back();
   }
 
   @override

@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:in_app_update/in_app_update.dart';
+import 'package:nomokit/app/services/api_service.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../data/login_response_model.dart';
@@ -161,11 +163,21 @@ class HomeController extends GetxController {
     file.value = Directory("$directory/saved").listSync();
   }
 
+  checkToken() async {
+    await ApiService.getProfile().then((value) async {
+      if (value! == false) {
+        print('token $value');
+      }
+    });
+  }
+
   @override
   void onInit() {
+    checkToken();
     super.onInit();
     usbService = Get.find<UsbSerialService>();
     bluetoothService = Get.find<BlueSerialService>();
+
     askPermision();
     getSavedProjectList();
     checkForUpdate();

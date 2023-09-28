@@ -8,16 +8,16 @@ String loginResponseModelToJson(LoginResponseModel data) =>
 
 class LoginResponseModel {
   final User user;
-  final String token;
+  final String? token;
 
   LoginResponseModel({
     required this.user,
-    required this.token,
+    this.token,
   });
 
   factory LoginResponseModel.fromJson(Map<String, dynamic> json) =>
       LoginResponseModel(
-        user: User.fromJson(json["user"]),
+        user: User.fromJson(json["user"] ?? json),
         token: json["token"],
       );
 

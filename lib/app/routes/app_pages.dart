@@ -20,6 +20,8 @@ import '../modules/project/bindings/project_binding.dart';
 import '../modules/project/views/project_view.dart';
 import '../modules/stetting/bindings/stetting_binding.dart';
 import '../modules/stetting/views/stetting_view.dart';
+import '../modules/upload_project/bindings/upload_project_binding.dart';
+import '../modules/upload_project/views/upload_project_view.dart';
 
 part 'app_routes.dart';
 
@@ -80,6 +82,11 @@ class AppPages {
       name: _Paths.PROJECT,
       page: () => const ProjectView(),
       binding: ProjectBinding(),
+    ),
+    GetPage(
+      name: _Paths.UPLOAD_PROJECT,
+      page: () => const UploadProjectView(),
+      binding: UploadProjectBinding(),
     ),
   ];
 }

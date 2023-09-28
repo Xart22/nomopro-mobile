@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
-import 'package:restart_app/restart_app.dart';
+import 'package:nomokit/app/data/proejct_categories_model.dart';
 
 import '../data/login_response_model.dart';
 
@@ -95,22 +95,22 @@ class ApiService {
   static Future<bool> logout() async {
     await getAccesToken();
     try {
-      final response = await client.get(
-        Uri.parse('https://nomo-kit.com/api/logout'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $accestoken',
-        },
-      );
+      final response =
+          await client.post(Uri.parse('https://nomo-kit.com/api/logout'),
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer $accestoken',
+              },
+              body: json.encode({'app': 'mobile'}));
       if (response.statusCode == 200) {
-        await storage.erase();
-        Restart.restartApp();
+        await storage.remove('accestoken');
         return true;
       } else {
         return false;
       }
     } catch (e) {
+      print(e);
       throw Exception('Terjadi kesalahan');
     }
   }
@@ -130,28 +130,55 @@ class ApiService {
           'Authorization': 'Bearer $accestoken',
         },
       );
-
       if (response.statusCode == 200) {
         final data = loginResponseModelFromJson(response.body);
+        print(data.user.subscriptions);
         await storage.write('accestoken', data.token);
-        if (data.user.subscriptions == null) {
-          Get.snackbar(
-            'Failed',
-            'You are not subscribed to any plan',
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.red,
-          );
-          await logout();
-          return false;
+        if (data.user.subscriptions != null ||
+            data.user.subscriptions?.isActive != 1) {
+          if (data.user.trial != null || data.user.trial?.isActive != 1) {
+            Get.snackbar(
+              'Failed',
+              'You are not subscribed to any plan',
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Colors.red,
+            );
+            await logout();
+            return false;
+          }
+        } else {
+          await storage.write('user', data.user.toJson());
+          return true;
         }
-        await storage.write('user', data.user.toJson());
-
-        return true;
       } else {
         return false;
       }
-    } catch (e) {
+    } catch (e, s) {
+      print(s);
       return false;
+    }
+  }
+
+  static Future<List<ProjectCategory>?> getProjectCategories() async {
+    await getAccesToken();
+    try {
+      final response = await client.get(
+        Uri.parse('https://nomo-kit.com/api/get-prject-categories'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $accestoken',
+        },
+      ).timeout(const Duration(seconds: 5));
+      if (response.statusCode == 200) {
+        final data = projectCategoriesResponseModelFromJson(response.body);
+
+        return data.categories;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      throw Exception('Terjadi kesalahan');
     }
   }
 }
