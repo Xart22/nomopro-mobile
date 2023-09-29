@@ -12,9 +12,39 @@ class UploadProjectController extends GetxController {
 
   var selectedCategory = 0.obs;
   var titleError = ''.obs;
+  var desError = ''.obs;
+  var categoryError = ''.obs;
   var list = <ProjectCategory>[].obs;
+  var progress = 0.0.obs;
 
-  void submit() {}
+  bool validate() {
+    if (titleController.text.isEmpty) {
+      titleError.value = 'Title Cannot be empty';
+      return false;
+    } else if (selectedCategory.value == 0) {
+      categoryError.value = "Please Select Category";
+      return false;
+    } else if (desc.text.isEmpty) {
+      desError.value = "Description Cannot bet empty";
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  void submit() {
+    isLoading.value = true;
+    bool valid = validate();
+    if (valid) {
+      ApiService.uploadProject({
+        "title": titleController.text,
+        "desc": desc.text,
+        "categories": selectedCategory.value
+      }, XFile(file.value.path.replaceAll('ob', 'png')), file.value)
+          .then((value) => print(value));
+    }
+    isLoading.value = false;
+  }
 
   void getCategories() async {
     await ApiService.getProjectCategories()

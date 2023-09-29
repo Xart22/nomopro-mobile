@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:nomokit/app/data/proejct_categories_model.dart';
-
+import 'package:nomokit/app/modules/upload_project/controllers/upload_project_controller.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:dio/dio.dart' as dio;
 import '../data/login_response_model.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ApiService {
   static final client = http.Client();
@@ -119,7 +123,7 @@ class ApiService {
     accestoken = await storage.read('accestoken');
   }
 
-  static Future<bool?> getProfile() async {
+  static Future<bool> getProfile() async {
     await getAccesToken();
     try {
       final response = await client.get(
@@ -132,28 +136,36 @@ class ApiService {
       );
       if (response.statusCode == 200) {
         final data = loginResponseModelFromJson(response.body);
-        print(data.user.subscriptions);
-        await storage.write('accestoken', data.token);
-        if (data.user.subscriptions != null ||
-            data.user.subscriptions?.isActive != 1) {
-          if (data.user.trial != null || data.user.trial?.isActive != 1) {
-            Get.snackbar(
-              'Failed',
-              'You are not subscribed to any plan',
-              snackPosition: SnackPosition.BOTTOM,
-              backgroundColor: Colors.red,
-            );
-            await logout();
-            return false;
-          }
-        } else {
+        if (data.user.subscriptions == null && data.user.trial == null) {
+          Get.snackbar(
+            'Failed',
+            'You are not subscribed to any plan',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+          );
+          return false;
+        } else if (data.user.subscriptions != null &&
+            data.user.subscriptions?.isActive == 1) {
+          await storage.write('user', data.user.toJson());
+
+          return true;
+        } else if (data.user.trial != null && data.user.trial?.isActive == 1) {
           await storage.write('user', data.user.toJson());
           return true;
+        } else {
+          Get.snackbar(
+            'Failed',
+            'You are not subscribed to any plan',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+          );
+          return false;
         }
       } else {
         return false;
       }
     } catch (e, s) {
+      print(e);
       print(s);
       return false;
     }
@@ -163,7 +175,7 @@ class ApiService {
     await getAccesToken();
     try {
       final response = await client.get(
-        Uri.parse('https://nomo-kit.com/api/get-prject-categories'),
+        Uri.parse('https://nomo-kit.com/api/get-project-categories'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -179,6 +191,55 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Terjadi kesalahan');
+    }
+  }
+
+  static Future<String> uploadProject(
+      Map<String, dynamic> body, XFile? img, XFile? filePath) async {
+    await getAccesToken();
+    try {
+      var formData = dio.FormData.fromMap({
+        "title": body['title'],
+        "description": body['desc'],
+        "project_category_id": body['categories'],
+        "file": await dio.MultipartFile.fromFile(filePath!.path,
+            filename: '${body['title']}.ob',
+            contentType: MediaType('application/x.openblock.ob', "ob")),
+        "image": await dio.MultipartFile.fromFile(img!.path,
+            filename: '${body['title']}.png',
+            contentType: MediaType('image', 'png'))
+      });
+
+      final response =
+          await dio.Dio().post("https://nomo-kit.com/api/upload-project",
+              options: dio.Options(headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer $accestoken',
+              }),
+              data: formData, onSendProgress: (count, total) {
+        Get.find<UploadProjectController>().progress.value = (count / total);
+      });
+      print(response);
+
+      final responseData = response.data;
+      if (responseData['status'] == "succes") {
+        return 'success';
+      } else {
+        return 'failed';
+      }
+    } catch (e) {
+      print(e);
+      Fluttertoast.showToast(
+        msg: 'Tidak ada Koneksi Internet / Internet Tidak Stable',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+      return 'false';
     }
   }
 }

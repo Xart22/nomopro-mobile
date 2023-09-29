@@ -165,8 +165,9 @@ class HomeController extends GetxController {
 
   checkToken() async {
     await ApiService.getProfile().then((value) async {
-      if (value! == false) {
-        print('token $value');
+      if (!value) {
+        await storage.remove('accestoken');
+        Restart.restartApp();
       }
     });
   }
@@ -180,6 +181,6 @@ class HomeController extends GetxController {
 
     askPermision();
     getSavedProjectList();
-    checkForUpdate();
+    //checkForUpdate();
   }
 }
