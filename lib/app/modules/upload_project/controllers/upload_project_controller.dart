@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:nomokit/app/data/proejct_categories_model.dart';
 import 'package:nomokit/app/services/api_service.dart';
@@ -41,7 +42,20 @@ class UploadProjectController extends GetxController {
         "desc": desc.text,
         "categories": selectedCategory.value
       }, XFile(file.value.path.replaceAll('ob', 'png')), file.value)
-          .then((value) => print(value));
+          .then((value) {
+        if (value == 'success') {
+          Get.back();
+          Fluttertoast.showToast(
+            msg: 'Upload Project Success',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black,
+            textColor: Colors.white,
+            fontSize: 14.0,
+          );
+        }
+      });
     }
     isLoading.value = false;
   }

@@ -220,7 +220,6 @@ class ApiService {
               data: formData, onSendProgress: (count, total) {
         Get.find<UploadProjectController>().progress.value = (count / total);
       });
-      print(response);
 
       final responseData = response.data;
       if (responseData['status'] == "succes") {
@@ -229,7 +228,6 @@ class ApiService {
         return 'failed';
       }
     } catch (e) {
-      print(e);
       Fluttertoast.showToast(
         msg: 'Tidak ada Koneksi Internet / Internet Tidak Stable',
         toastLength: Toast.LENGTH_SHORT,
