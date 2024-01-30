@@ -30,6 +30,7 @@ class DevicesController extends GetxController {
     deviceStreamSubscription = bluetoothService.startDiscovery((result) {
       devicesBt.add(result!);
     });
+
     deviceStreamSubscription?.onDone(() {
       isDiscovering.value = false;
     });

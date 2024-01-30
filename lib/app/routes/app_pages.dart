@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
 
 import '../modules/devices/bindings/devices_binding.dart';
-import '../modules/devices/button/bindings/button_binding.dart';
-import '../modules/devices/button/views/button_view.dart';
 import '../modules/devices/chat/bindings/chat_binding.dart';
 import '../modules/devices/chat/views/chat_view.dart';
 import '../modules/devices/joystick/bindings/joystick_binding.dart';
 import '../modules/devices/joystick/views/joystick_view.dart';
+import '../modules/devices/tinyBit/bindings/tiny_bit_binding.dart';
+import '../modules/devices/tinyBit/views/tiny_bit_view.dart';
 import '../modules/devices/views/devices_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
@@ -52,11 +52,6 @@ class AppPages {
           binding: ChatBinding(),
         ),
         GetPage(
-          name: _Paths.BUTTON,
-          page: () => const ButtonView(),
-          binding: ButtonBinding(),
-        ),
-        GetPage(
           name: _Paths.JOYSTICK,
           page: () => const JoystickView(),
           binding: JoystickBinding(),
@@ -87,6 +82,11 @@ class AppPages {
       name: _Paths.UPLOAD_PROJECT,
       page: () => const UploadProjectView(),
       binding: UploadProjectBinding(),
+    ),
+    GetPage(
+      name: _Paths.TINY_BIT,
+      page: () => const TinyBitView(),
+      binding: TinyBitBinding(),
     ),
   ];
 }

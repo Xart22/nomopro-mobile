@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../devices/tinyBit/controllers/tiny_bit_controller.dart';
 import '../controllers/home_controller.dart';
 
 class ControlView extends GetView<HomeController> {
@@ -23,7 +24,7 @@ class ControlView extends GetView<HomeController> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                width: Get.width / 2.5,
+                width: Get.width / 3.5,
                 height: 200,
                 child: Card(
                   shape: RoundedRectangleBorder(
@@ -49,7 +50,7 @@ class ControlView extends GetView<HomeController> {
                 ),
               ),
               SizedBox(
-                width: Get.width / 2.5,
+                width: Get.width / 3.5,
                 height: 200,
                 child: Card(
                   shape: RoundedRectangleBorder(
@@ -67,6 +68,34 @@ class ControlView extends GetView<HomeController> {
                         ),
                         image: DecorationImage(
                           image: AssetImage("assets/img/bluetooth.png"),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: Get.width / 3.5,
+                height: 200,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: const BorderSide(color: Colors.grey, width: 2),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      Get.toNamed("/tiny-bit")?.then((value) {
+                        Get.delete<TinyBitController>();
+                      });
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                        image: DecorationImage(
+                          image: AssetImage("assets/img/tinyBit.png"),
                           fit: BoxFit.cover,
                         ),
                       ),

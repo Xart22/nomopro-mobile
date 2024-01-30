@@ -35,6 +35,7 @@ class BlueSerialService extends GetxService {
       }
       return true;
     } catch (exception) {
+      print(exception);
       return false;
     }
   }

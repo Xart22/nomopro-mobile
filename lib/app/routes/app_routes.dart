@@ -14,6 +14,7 @@ abstract class Routes {
   static const NOMOPRO = _Paths.NOMOPRO;
   static const PROJECT = _Paths.PROJECT;
   static const UPLOAD_PROJECT = _Paths.UPLOAD_PROJECT;
+  static const TINY_BIT = _Paths.TINY_BIT;
 }
 
 abstract class _Paths {
@@ -29,4 +30,5 @@ abstract class _Paths {
   static const NOMOPRO = '/nomopro';
   static const PROJECT = '/project';
   static const UPLOAD_PROJECT = '/upload-project';
+  static const TINY_BIT = '/tiny-bit';
 }
