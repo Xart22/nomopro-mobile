@@ -27,6 +27,8 @@ class ChatController extends GetxController {
   connectToUsb() async {
     await usbSerialService.connect(
         device[1], selectedBaudRate.value, onStringReceived);
+    title.value = device[1].productName ?? '';
+    selectedBaudRate.value = device[2];
     isLoading.value = false;
   }
 
@@ -139,6 +141,7 @@ class ChatController extends GetxController {
           .then((value) {
         if (value) {
           isLoading.value = false;
+          title.value = device[1].name;
         } else {
           Get.back();
           Get.back();
@@ -233,11 +236,8 @@ class ChatController extends GetxController {
   void onInit() {
     super.onInit();
     if (device[0] != 'usb') {
-      title.value = device[1].name;
       connecToDeviceBle();
     } else {
-      title.value = device[1].productName ?? '';
-      selectedBaudRate.value = device[2];
       connectToUsb();
     }
   }
