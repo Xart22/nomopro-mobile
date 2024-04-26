@@ -34,12 +34,12 @@ class JoystickController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    if (device[1].name == null) {
+      Get.back();
+    }
     if (device[0] != 'usb') {
-      title.value = device[1].name;
       connecToDeviceBle();
     } else {
-      title.value = device[1].productName ?? '';
-      selectedBaudRate.value = device[2];
       connectToUsb();
     }
   }
@@ -81,6 +81,8 @@ class JoystickController extends GetxController {
   // USB DEVICE
   connectToUsb() async {
     await usbSerialService.connect(device[1], selectedBaudRate.value, null);
+    title.value = device[1].productName ?? '';
+    selectedBaudRate.value = device[2];
     isLoading.value = false;
   }
 
@@ -104,6 +106,7 @@ class JoystickController extends GetxController {
       await bluetoothService.connect(device[1].address, null).then((value) {
         if (value) {
           isLoading.value = false;
+          title.value = device[1].name;
         } else {
           Get.back();
           Get.back();

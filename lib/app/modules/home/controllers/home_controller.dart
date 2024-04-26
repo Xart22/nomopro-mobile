@@ -21,8 +21,9 @@ class HomeController extends GetxController {
   late BlueSerialService bluetoothService;
   final Uri urlSonatronic = Uri.parse('https://tokopedia.link/yPY3uuba4zb');
   final Uri urlRoboClubShopee =
-      Uri.parse('https://shopee.co.id/roboclub_store');
-  final Uri urlRoboClub = Uri.parse('https://tokopedia.link/RFOavkWnaAb');
+      Uri.parse('https://shopee.co.id/instareducation_store');
+  final Uri urlRoboClub =
+      Uri.parse('https://www.tokopedia.com/instareducation');
   var title = 'Nomokit'.obs;
   var file = [].obs;
   var userData = User(
@@ -70,7 +71,7 @@ class HomeController extends GetxController {
                 width: 100,
                 height: 100,
               ),
-              title: const Center(child: Text('Robooclub Store')),
+              title: const Center(child: Text('Instar Education Store')),
               trailing: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
@@ -109,7 +110,7 @@ class HomeController extends GetxController {
                 width: 100,
                 height: 100,
               ),
-              title: const Center(child: Text('Roboclub_Store')),
+              title: const Center(child: Text('Instar Education Store')),
               trailing: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,

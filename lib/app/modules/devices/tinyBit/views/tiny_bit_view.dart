@@ -61,6 +61,7 @@ class TinyBitView extends GetView<TinyBitController> {
                                         onPressed: () {},
                                         icon: Image.asset(
                                           'assets/img/arrow_up_green.png',
+                                          width: 40,
                                         )),
                                   )
                                 ],
@@ -79,6 +80,7 @@ class TinyBitView extends GetView<TinyBitController> {
                                         onPressed: () {},
                                         icon: Image.asset(
                                           'assets/img/arrow_left_yellow.png',
+                                          width: 40,
                                         )),
                                   ),
                                   SizedBox(width: Get.width * 0.08),
@@ -93,6 +95,7 @@ class TinyBitView extends GetView<TinyBitController> {
                                         onPressed: () {},
                                         icon: Image.asset(
                                           'assets/img/arrow_right_yellow.png',
+                                          width: 40,
                                         )),
                                   ),
                                 ],
@@ -111,6 +114,7 @@ class TinyBitView extends GetView<TinyBitController> {
                                         onPressed: () {},
                                         icon: Image.asset(
                                           'assets/img/arrow_down_red.png',
+                                          width: 40,
                                         )),
                                   )
                                 ],
@@ -132,6 +136,7 @@ class TinyBitView extends GetView<TinyBitController> {
                                           onPressed: () {},
                                           icon: Image.asset(
                                             'assets/img/rotate-left.png',
+                                            width: 40,
                                           )),
                                     ),
                                     GestureDetector(
@@ -145,6 +150,7 @@ class TinyBitView extends GetView<TinyBitController> {
                                           onPressed: () {},
                                           icon: Image.asset(
                                             'assets/img/rotate-right.png',
+                                            width: 40,
                                           )),
                                     )
                                   ],

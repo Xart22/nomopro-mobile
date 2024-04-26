@@ -1,5 +1,5 @@
 name: nomokit
-version: 1.0.7+11
+version: 1.0.7+12
 publish_to: none
 description: A new Flutter project.
 environment:
@@ -15,7 +15,7 @@ dependencies:
   usb_serial: ^0.4.0
   url_launcher: ^6.1.11
   flutter_spinkit: ^5.2.0
-  flutter_inappwebview: ^6.0.0-beta.23
+  flutter_inappwebview: ^6.0.0
   http: ^0.13.6
   path_provider: ^2.0.15
   share_plus: ^7.0.1

@@ -42,10 +42,10 @@ class JoystickView extends GetView<JoystickController> {
                                 },
                                 child: IconButton(
                                     splashColor: Colors.blueAccent,
-                                    iconSize: 60,
                                     onPressed: () {},
                                     icon: Image.asset(
                                       'assets/img/arrow_up.png',
+                                      width: 60,
                                     )),
                               ),
                               Row(
@@ -69,6 +69,7 @@ class JoystickView extends GetView<JoystickController> {
                                         onPressed: () {},
                                         icon: Image.asset(
                                           'assets/img/arrow_left.png',
+                                          width: 60,
                                         )),
                                   )),
                                   const SizedBox(),
@@ -89,6 +90,7 @@ class JoystickView extends GetView<JoystickController> {
                                             onPressed: () {},
                                             icon: Image.asset(
                                               'assets/img/arrow_right.png',
+                                              width: 60,
                                             ))),
                                   ),
                                 ],
@@ -109,6 +111,7 @@ class JoystickView extends GetView<JoystickController> {
                                         onPressed: () {},
                                         icon: Image.asset(
                                           'assets/img/arrow_down.png',
+                                          width: 60,
                                         ))),
                               ),
                             ],

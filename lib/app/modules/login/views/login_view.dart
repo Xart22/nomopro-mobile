@@ -101,6 +101,7 @@ class LoginView extends GetView<LoginController> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       minimumSize: const Size(double.infinity, 50),
+                      backgroundColor: Colors.blue,
                     ),
                     onPressed: controller.submit,
                     child: controller.isLoading.value
@@ -111,7 +112,8 @@ class LoginView extends GetView<LoginController> {
                               color: Colors.white,
                             ),
                           )
-                        : const Text('Login'),
+                        : const Text('Login',
+                            style: TextStyle(color: Colors.white)),
                   )),
             ),
           ],
