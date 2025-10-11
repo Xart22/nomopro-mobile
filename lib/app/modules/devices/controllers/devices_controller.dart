@@ -84,7 +84,7 @@ class DevicesController extends GetxController {
         content: Column(
           children: [
             DropdownButtonFormField(
-              value: selectedBaudRate.value,
+              initialValue: selectedBaudRate.value,
               decoration: const InputDecoration(
                 labelText: "Baud Rate",
                 border: OutlineInputBorder(),

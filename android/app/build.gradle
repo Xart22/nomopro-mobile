@@ -1,3 +1,9 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -21,9 +27,6 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
@@ -31,7 +34,8 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 34
+    namespace "com.sonasoft.nomokit"
+    compileSdk 36
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -52,7 +56,7 @@ android {
         applicationId "com.sonasoft.nomokit"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 21
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -61,22 +65,22 @@ android {
 
     signingConfigs {
        release {
-           keyAlias keystoreProperties['keyAlias']
-           keyPassword keystoreProperties['keyPassword']
-           storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-           storePassword keystoreProperties['storePassword']
-       }
-
-       debug {
-           keyAlias keystoreProperties['keyAlias']
-           keyPassword keystoreProperties['keyPassword']
-           storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-           storePassword keystoreProperties['storePassword']
+           if (keystorePropertiesFile.exists()) {
+               keyAlias keystoreProperties['keyAlias']
+               keyPassword keystoreProperties['keyPassword']
+               storeFile file(keystoreProperties['storeFile'])
+               storePassword keystoreProperties['storePassword']
+           }
        }
    }
    buildTypes {
        release {
-           signingConfig signingConfigs.debug
+           if (keystorePropertiesFile.exists()) {
+               signingConfig signingConfigs.release
+           }
+       }
+       debug {
+           // Use default debug signing
        }
    }
 }
