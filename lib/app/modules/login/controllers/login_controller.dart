@@ -28,9 +28,7 @@ class LoginController extends GetxController {
         isLoading.value = false;
         if (value == 'success') {
           Get.offAllNamed('/home');
-        }
-
-        if (value == 'error') {
+        } else {
           Get.snackbar(
             'Error',
             'Email or password is wrong',
