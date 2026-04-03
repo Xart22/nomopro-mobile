@@ -98,9 +98,7 @@ class ChatController extends GetxController {
 
     if (text.isNotEmpty) {
       try {
-        bluetoothService.connection!.output
-            .add(Uint8List.fromList(utf8.encode("$text\r\n")));
-        await bluetoothService.connection!.output.allSent;
+        bluetoothService.write(Uint8List.fromList(utf8.encode("$text\r\n")));
 
         messages.add(Message(clientID.value, text));
         Future.delayed(const Duration(milliseconds: 333)).then((_) {
@@ -135,7 +133,7 @@ class ChatController extends GetxController {
   }
 
   connecToDeviceBle() async {
-    if (bluetoothService.connection == null) {
+    if (!bluetoothService.isConnected) {
       await bluetoothService
           .connect(device[1].address, onDataReceived)
           .then((value) {

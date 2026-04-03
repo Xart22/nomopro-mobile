@@ -102,7 +102,7 @@ class JoystickController extends GetxController {
   // BLUETOOTH DEVICE
 
   connecToDeviceBle() async {
-    if (bluetoothService.connection == null) {
+    if (!bluetoothService.isConnected) {
       await bluetoothService.connect(device[1].address, null).then((value) {
         if (value) {
           isLoading.value = false;
@@ -124,12 +124,8 @@ class JoystickController extends GetxController {
 
     if (text.isNotEmpty) {
       try {
-        bluetoothService.connection!.output
-            .add(Uint8List.fromList(utf8.encode("$text\n")));
-        await bluetoothService.connection!.output.allSent;
-        bluetoothService.connection!.output
-            .add(Uint8List.fromList(utf8.encode("off\n")));
-        await bluetoothService.connection!.output.allSent;
+        bluetoothService.write(Uint8List.fromList(utf8.encode("$text\n")));
+        bluetoothService.write(Uint8List.fromList(utf8.encode("off\n")));
       } catch (e) {
         Get.back();
         Get.back();

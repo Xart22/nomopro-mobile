@@ -10,7 +10,7 @@ dependencies:
   get: ^4.7.0
   flutter:
     sdk: flutter
-  flutter_bluetooth_serial: ^0.4.0
+  bluetooth_classic: ^0.0.3
   permission_handler: ^11.0.0
   usb_serial: ^0.4.0
   url_launcher: ^6.1.11

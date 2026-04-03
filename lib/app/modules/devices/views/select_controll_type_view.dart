@@ -47,7 +47,7 @@ class SelectControllTypeView extends GetView<DevicesController> {
             } else {
               Get.toNamed(route, arguments: [
                 controller.connectionType,
-                controller.devicesBt[controller.indexSelected.value].device
+                controller.devicesBt[controller.indexSelected.value]
               ]);
             }
           },

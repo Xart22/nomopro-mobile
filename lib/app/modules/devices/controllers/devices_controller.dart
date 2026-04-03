@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:bluetooth_classic/models/device.dart';
 import 'package:get/get.dart';
 import 'package:nomokit/app/services/blue_serial.dart';
 import 'package:nomokit/app/services/usb_serial.dart';
@@ -16,35 +16,45 @@ class DevicesController extends GetxController {
   var devicesUsb = <UsbDevice>[].obs;
   // BLE
   late BlueSerialService bluetoothService;
-  StreamSubscription<BluetoothDiscoveryResult>? deviceStreamSubscription;
   var isDiscovering = true.obs;
-  var devicesBt = <BluetoothDiscoveryResult>[].obs;
+  var devicesBt = <Device>[].obs;
   var messages = <Message>[].obs;
   final TextEditingController textEditingController = TextEditingController();
   var indexSelected = 0.obs;
   var selectedBaudRate = 9600.obs;
 
-  startDiscovery() {
+  startDiscovery() async {
     isDiscovering.value = true;
     devicesBt.clear();
-    deviceStreamSubscription = bluetoothService.startDiscovery((result) {
-      devicesBt.add(result!);
+    await bluetoothService.startDiscovery();
+
+    // Use a timer to periodically update the device list
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if (!isDiscovering.value) {
+        timer.cancel();
+      } else {
+        devicesBt.value = List.from(bluetoothService.discoveredDevices);
+      }
     });
 
-    deviceStreamSubscription?.onDone(() {
-      isDiscovering.value = false;
+    // Stop discovery after 10 seconds
+    Future.delayed(Duration(seconds: 10), () {
+      if (isDiscovering.value) {
+        stopDiscovery();
+      }
     });
   }
 
   stopDiscovery() async {
-    deviceStreamSubscription?.cancel();
+    await bluetoothService.stopDiscovery();
+    devicesBt.value = List.from(bluetoothService.discoveredDevices);
     isDiscovering.value = false;
   }
 
   restartDiscovery() async {
     devicesBt.clear();
-    stopDiscovery();
-    startDiscovery();
+    await stopDiscovery();
+    await startDiscovery();
   }
 
   getDevices() async {
@@ -60,21 +70,14 @@ class DevicesController extends GetxController {
     } else {
       await bluetoothService.init();
 
-      if (bluetoothService.bluetoothState == BluetoothState.STATE_OFF ||
-          bluetoothService.bluetoothState == BluetoothState.STATE_TURNING_OFF ||
-          bluetoothService.bluetoothState == BluetoothState.UNKNOWN) {
-        await FlutterBluetoothSerial.instance.requestEnable().then((value) {
-          if (value == true) {
-            startDiscovery();
-          } else {
-            Get.back();
-            Get.snackbar("Bluetooth", "Bluetooth is not enabled",
-                snackPosition: SnackPosition.BOTTOM);
-          }
-        });
-      } else {
-        startDiscovery();
+      if (!bluetoothService.bluetoothEnabled) {
+        Get.back();
+        Get.snackbar("Bluetooth", "Bluetooth is not enabled",
+            snackPosition: SnackPosition.BOTTOM);
+        return;
       }
+
+      await startDiscovery();
     }
   }
 

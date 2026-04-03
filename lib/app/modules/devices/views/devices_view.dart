@@ -59,8 +59,8 @@ class DevicesView extends GetView<DevicesController> {
                 itemCount: controller.devicesBt.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(controller.devicesBt[index].device.name ?? ''),
-                    subtitle: Text(controller.devicesBt[index].device.address),
+                    title: Text(controller.devicesBt[index].name ?? 'Unknown'),
+                    subtitle: Text(controller.devicesBt[index].address),
                     trailing: IconButton(
                       icon: const Icon(Icons.bluetooth),
                       onPressed: () {

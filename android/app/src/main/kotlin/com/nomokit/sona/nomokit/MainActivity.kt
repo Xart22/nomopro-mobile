@@ -35,7 +35,7 @@ class MainActivity : FlutterActivity() {
         if (usbManager.hasPermission(device)) {
             return true
         }
-        val permissionIntent = PendingIntent.getBroadcast(this, 0, Intent(CHANNEL), 0)
+        val permissionIntent = PendingIntent.getBroadcast(this, 0, Intent(CHANNEL), PendingIntent.FLAG_IMMUTABLE)
         usbManager.requestPermission(device, permissionIntent)
         return false
     }
