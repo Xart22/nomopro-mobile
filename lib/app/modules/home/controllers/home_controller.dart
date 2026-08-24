@@ -19,11 +19,9 @@ class HomeController extends GetxController {
   final storage = GetStorage();
   late UsbSerialService usbService;
   late BlueSerialService bluetoothService;
-  final Uri urlSonatronic = Uri.parse('https://tokopedia.link/yPY3uuba4zb');
+  final Uri urlSonatronic = Uri.parse('https://tk.tokopedia.com/ZS4jqd4YG/');
   final Uri urlRoboClubShopee =
       Uri.parse('https://shopee.co.id/instareducation_store');
-  final Uri urlRoboClub =
-      Uri.parse('https://www.tokopedia.com/instareducation');
   var title = 'Nomokit'.obs;
   var file = [].obs;
   var userData = User(
@@ -65,24 +63,6 @@ class HomeController extends GetxController {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            ListTile(
-              leading: Image.asset(
-                'assets/icon/tokped.png',
-                width: 100,
-                height: 100,
-              ),
-              title: const Center(child: Text('Instar Education Store')),
-              trailing: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                ),
-                onPressed: () {
-                  Get.back();
-                  openShop(urlRoboClub);
-                },
-                child: const Text('Open', style: TextStyle(color: Colors.blue)),
-              ),
-            ),
             ListTile(
               leading: Image.asset(
                 'assets/icon/tokped.png',
